@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Mondmission Funkgerät</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@500;700;800&display=swap">
+<style>
+/* Layout: ein einziges großes Funkgerät, mittig, ein Riesenknopf. Bewusst nur dunkles Weltraum-Design. */
+:root{
+  --space:#0f1b3d; --space2:#182a5c; --panel:#22346f; --line:#3a4f92;
+  --moon:#e8e6df; --muted:#a9b4d6; --rocket:#e2493b; --sun:#f6c445; --ok:#5cc98a;
+  --display:"Fredoka","Baloo 2",system-ui,sans-serif; --body:"Nunito",system-ui,sans-serif;
+  color-scheme:dark;
+}
+html,body{height:100%;margin:0}
+body{background:var(--space);color:var(--moon);font-family:var(--body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  background-image:radial-gradient(1px 1px at 12% 18%,#fff8 50%,transparent 51%),radial-gradient(1.5px 1.5px at 78% 9%,#fff9 50%,transparent 51%),radial-gradient(1px 1px at 55% 30%,#fff6 50%,transparent 51%),radial-gradient(1px 1px at 88% 62%,#fff7 50%,transparent 51%),radial-gradient(1.5px 1.5px at 20% 80%,#fff8 50%,transparent 51%),radial-gradient(1px 1px at 40% 92%,#fff5 50%,transparent 51%);}
+.wrap{max-width:460px;margin:0 auto;padding-block:20px 28px;display:flex;flex-direction:column;gap:18px;min-height:100%;box-sizing:border-box}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{font-family:var(--display);font-weight:600;font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.chan{font-family:var(--display);font-size:14px;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-variant-numeric:tabular-nums}
+.radio{background:var(--space2);border:2px solid var(--line);border-radius:28px;padding:22px 20px 26px;display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center}
+.who{display:flex;align-items:center;gap:12px;align-self:stretch}
+.face{width:64px;height:64px;border-radius:50%;flex:none;display:grid;place-items:center;font-family:var(--display);font-size:28px;font-weight:600;color:var(--space)}
+.who-txt{text-align:left;min-width:0}
+.who-name{font-family:var(--display);font-size:22px;font-weight:600;line-height:1.1}
+.who-role{color:var(--muted);font-size:15px}
+.station{font-family:var(--display);font-size:clamp(24px,7vw,30px);font-weight:600;line-height:1.15;text-wrap:balance;margin:0}
+.page-hint{color:var(--muted);font-size:16px;margin:-8px 0 0}
+.screen{align-self:stretch;height:46px;border-radius:12px;background:#0b1430;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;gap:4px;overflow:hidden}
+.bar{width:6px;border-radius:3px;background:var(--ok);height:6px;transition:height .12s}
+.cue{font-size:14px;color:var(--sun);min-height:20px}
+.big{width:150px;height:150px;border-radius:50%;border:none;cursor:pointer;background:var(--rocket);color:#fff;display:grid;place-items:center;box-shadow:0 8px 0 #9e2a20,0 0 0 8px #e2493b33;transition:transform .08s,box-shadow .08s;-webkit-tap-highlight-color:transparent}
+.big:active{transform:translateY(6px);box-shadow:0 2px 0 #9e2a20,0 0 0 8px #e2493b33}
+.big.playing{background:var(--sun);box-shadow:0 8px 0 #b38a1c,0 0 0 8px #f6c44533}
+.big svg{width:64px;height:64px}
+.big:focus-visible,.small:focus-visible,.list a:focus-visible{outline:3px solid var(--sun);outline-offset:4px}
+.biglabel{font-family:var(--display);font-size:22px;font-weight:600}
+.progress{align-self:stretch;height:12px;border-radius:6px;background:#0b1430;overflow:hidden}
+.progress span{display:block;height:100%;width:0;background:var(--ok);transition:width .3s}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.small{font-family:var(--display);font-size:17px;background:var(--panel);color:var(--moon);border:1px solid var(--line);border-radius:999px;padding:10px 18px;cursor:pointer;display:flex;align-items:center;gap:8px}
+.small svg{width:20px;height:20px}
+.note{font-size:13px;color:var(--muted);text-align:center;line-height:1.5;margin:0}
+.list{display:flex;flex-direction:column;gap:8px;padding:0;margin:0;list-style:none}
+.list a{display:flex;align-items:center;gap:12px;background:var(--space2);border:1px solid var(--line);border-radius:16px;padding:10px 14px;color:var(--moon);text-decoration:none}
+.list .dot{width:36px;height:36px;border-radius:50%;flex:none;display:grid;place-items:center;font-family:var(--display);font-weight:600;color:var(--space)}
+.list b{font-family:var(--display);font-weight:600;font-size:17px;display:block}
+.list small{color:var(--muted)}
+h1{font-family:var(--display);font-weight:600;font-size:28px;margin:0;text-wrap:balance}
+.field{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.field input{font:inherit;font-size:17px;padding:8px 12px;border-radius:10px;border:1px solid var(--line);background:#0b1430;color:var(--moon);flex:1;min-width:0}
+@media (prefers-reduced-motion:reduce){.bar,.progress span{transition:none}}
+</style>
+</head>
+<body>
+
+<div class="wrap" id="app"></div>
+
+<script>
+const PEOPLE={
+  alex:{name:"Commander Alex",role:"Bodenstation",color:"#f6c445",ini:"A",rate:0.92,pitch:0.85},
+  sarah:{name:"Astronautin Sarah",role:"Pilotin",color:"#ff8a7a",ini:"S",rate:1.0,pitch:1.15},
+  sam:{name:"Mechaniker Sam",role:"Technik",color:"#7fd4ff",ini:"S",rate:0.95,pitch:1.0}
+};
+const TRACKS=[
+ {id:"s00",page:1,who:"alex",title:"Der Auftrag",text:"[Funkgeräusch] [Piepen] Bodenstation an {N}, Bodenstation an {N}! Kannst du mich hören? Hier spricht Commander Alex. Ich leite die Bodenstation. Das ist der Raum auf der Erde, von dem aus wir alle Raketen begleiten. {N}, wir haben eine wichtige Mission: Wir wollen zum Mond fliegen! Der Mond ist sehr, sehr weit weg. Eine Rakete braucht ungefähr drei Tage, bis sie dort ankommt. Bevor du mitfliegen darfst, machst du ein echtes Astronauten-Training. Auf jeder Seite wartet eine Aufgabe auf dich. Zu jeder Aufgabe gibt es einen Funkspruch: mal von mir, mal von Astronautin Sarah, unserer Pilotin, und mal von Mechaniker Sam, der sich um die Technik kümmert. Leg dir jetzt einen Bleistift und deine Buntstifte bereit: Rot, Blau, Gelb und Grün. Hast du alles? Prima! Und so geht es: Blättere um zur nächsten Seite. Dort siehst du wieder einen QR-Code. Scanne ihn, dann meldet sich Mechaniker Sam bei dir. Bodenstation Ende. Viel Erfolg, {N}! [Piepen]"},
+ {id:"s01",page:2,who:"sam",title:"Ausrüstungs-Check",text:"[Werkstattgeräusche] [Funkgeräusch] Hallo {N}! Hier ist Sam, der Mechaniker. Schön, dass du da bist! Ich kümmere mich um die ganze Technik und um die Ausrüstung. Auf dem Mond gibt es keine Luft zum Atmen. Deshalb tragen Astronauten einen Raumanzug mit Helm und einen Rucksack mit Sauerstoff. Ohne den geht es nicht! Aber oje, in der Umkleide ist das Licht ausgefallen. Ich sehe nur noch die Schatten der Sachen. Hilfst du mir, alles zu sortieren? Schau auf dein Blatt. Links siehst du vier Teile: einen Helm, einen Handschuh, einen Stiefel und einen Rucksack. Rechts siehst du ihre Schatten, aber durcheinander. Nimm deinen Bleistift. Fang beim Helm an. Schau genau: Welcher Schatten hat genau die gleiche Form? Zieh eine Linie vom Punkt beim Helm zum Punkt bei seinem Schatten. Dann machst du das Gleiche mit dem Handschuh, dem Stiefel und dem Rucksack. Pass gut auf, Handschuh und Stiefel sehen sich ein bisschen ähnlich! Und wenn du fertig bist, malst du den Helm mit deinem gelben Stift an. Jetzt drück auf Pause und löse die Aufgabe ganz in Ruhe. Wenn du fertig bist, blätterst du um und scannst den nächsten Code. Bis gleich, {N}! [Piepen]"},
+ {id:"s02",page:3,who:"alex",title:"Der Raketenstart",text:"[Funkgeräusch] [Piepen] {N}, hier ist wieder Commander Alex aus der Bodenstation. Super gemacht! Sam sagt, die ganze Ausrüstung ist sortiert. Jetzt wird es ernst: Die Rakete steht startbereit. Eine Rakete ist so stark, dass sie sich von der Erde losreißen kann. Unten kommt ganz viel heißes Gas heraus, das schiebt sie nach oben. Dafür zählen wir rückwärts. Zähl laut mit, {N}! [Countdown] Fünf. Vier. Drei. Zwei. Eins. Start! [Raketen-Grollen] Sie fliegt! Jetzt brauchen wir deine Hilfe: Du zeichnest die Flugbahnen nach. Nimm deinen Bleistift und halte ihn gut fest. In der ersten Reihe stehen fünf kleine Raketen. Fahre unter jeder Rakete den Rauchstreifen nach, immer von unten nach oben. In der zweiten Reihe fliegt die Rakete durch die Wolken. Fahre die Wellenlinie nach, vom grünen Punkt links bis zum Stern rechts. In der dritten Reihe fliegt die Rakete in Bogen um die Erde. Fahre auch diese Bogen von links nach rechts nach. Ganz langsam, Piloten haben keine Eile. Drück jetzt auf Pause und fahr alle Bahnen in Ruhe nach. Danach blätterst du um. Bodenstation Ende! [Piepen]"},
+ {id:"s03",page:4,who:"sarah",title:"Verpflegung in Schwerelosigkeit",text:"[Funkgeräusch] Hallo {N}! Hier ist Sarah, deine Pilotin. Wir sind im Weltraum! Und weißt du was? Hier oben schwebt alles. Auch ich, und auch unser Essen! Im Weltraum essen Astronauten aus Beuteln und Tuben, damit nichts wegfliegt. Und statt Brot gibt es Tortillas, das sind flache Fladen. Brot macht nämlich Krümel, und die würden überall herumschweben! Jetzt muss ich zählen, ob wir genug Essen dabei haben. Hilfst du mir? Schau auf dein Blatt. Oben siehst du vier Kästen mit schwebenden Beuteln. Zähle die Beutel im ersten Kasten. Zeig mit dem Finger auf jeden Beutel, dann verzählst du dich nicht. Unter dem Kasten stehen drei Zahlen. Nimm deinen roten Stift und kreise die Zahl ein, die passt. Das machst du bei allen vier Kästen. Ganz unten ist ein leerer Trinkbeutel. Daneben steht die Zahl drei. Nimm deinen blauen Stift und male genau drei Wassertropfen in den Beutel. Jetzt drück auf Pause und zähle in Ruhe. Danach blätterst du um. Sam wartet schon am Instrumentenboard! [Piepen]"},
+ {id:"s04",page:5,who:"sam",title:"Das Instrumentenboard",text:"[Funkgeräusch] [Piepen] {N}, hier ist wieder Sam! Ich liege gerade unter dem Instrumentenboard. Das ist das große Brett mit allen Knöpfen, mit denen Sarah die Rakete steuert. Die Knöpfe leuchten in einer festen Reihenfolge, wie ein Muster. Aber bei ein paar Knöpfen sind die Lampen kaputt. Du musst herausfinden, welche Farbe oder Form dort hingehört. Schau dir die erste Reihe an. Sag die Farben laut: rot, blau, rot, blau, rot. Und was kommt dann? Male den leeren Knopf mit der richtigen Farbe an. In der zweiten Reihe gibt es Formen: Kreis, Dreieck, Kreis, Dreieck. Hier fehlen zwei Knöpfe. Nimm deinen Bleistift und zeichne die richtigen Formen hinein. Die dritte Reihe ist eine Profi-Aufgabe. Sprich sie wieder laut mit: gelb, gelb, grün. Gelb, gelb, grün. Gelb. Na? Was kommt jetzt? Gut aufpassen! Male den Knopf in der richtigen Farbe an. Drück jetzt auf Pause und repariere das Board in Ruhe. Danach blätterst du um. Ich bin stolz auf dich, {N}! [Piepen]"},
+ {id:"s05",page:6,who:"alex",title:"Entspannungs-Pause",text:"[Funkgeräusch] Hallo {N}, hier ist Commander Alex. Du hast schon ganz viel geschafft. Jetzt ordne ich eine Pause an. Auch Astronauten brauchen Pausen! In der Raumstation schweben die Astronauten. Das probieren wir jetzt zusammen. Steh auf, {N}! Stell dir vor, du bist ganz leicht wie eine Feder. Breite deine Arme ganz langsam aus, und bewege sie in Zeitlupe auf und ab. [Stille] So schweben Astronauten! Jetzt stell dich auf die Zehenspitzen und mach dich ganz groß. Noch größer. [Stille] Und wieder runter. Atme jetzt tief ein, durch die Nase, so als würdest du deinen Raumanzug mit Luft füllen. [Stille] Und langsam wieder aus. Noch einmal: ein. [Stille] Und aus. Weißt du, wie Astronauten schlafen? In einem Schlafsack, der an der Wand festgemacht ist. Sonst würden sie im Schlaf herumschweben! Leg deine Hände an die Wange und schließ kurz die Augen. [Stille] Gut erholt? Dann setz dich wieder hin. Auf deinem Blatt schläft ein Astronaut in seinem Schlafsack. Du darfst ihn mit all deinen Buntstiften ausmalen, so wie es dir gefällt. Drück jetzt auf Pause und male ganz in Ruhe. Danach geht es weiter zur Mondlandung! [Piepen]"},
+ {id:"s06",page:7,who:"sarah",title:"Die Mondlandung",text:"[Funkgeräusch] [Triebwerk] {N}, hier ist Sarah! Schau mal aus dem Fenster, da ist der Mond! Wir sind ganz nah dran. Jetzt kommt das Schwierigste: die Landung. Der Mond ist voller Krater. Das sind große Löcher, die entstehen, wenn Steine aus dem Weltall auf den Mond fallen. In einem Krater können wir nicht landen. Wir brauchen den sicheren Landeplatz mit der Fahne. Schau auf dein Blatt. Oben links ist unsere Mondfähre. Unten rechts ist der Landeplatz. Dazwischen liegen viele Wege, aber nur einer führt ans Ziel. Manche Wege enden an einem Krater, da geht es nicht weiter. Such den Weg zuerst mit deinem Finger. Wenn du an einen Krater kommst, gehst du einfach zurück und probierst einen anderen Weg. Wenn du den richtigen Weg gefunden hast, nimmst du deinen Bleistift und zeichnest ihn ein. Bleib dabei zwischen den Linien. Und wenn wir gelandet sind, malst du die Fahne mit deinem grünen Stift an. Drück jetzt auf Pause und lande uns sicher. Ich zähle auf dich, Co-Pilot {N}! [Piepen]"},
+ {id:"s07",page:8,who:"sam",title:"Mondgestein-Forscher",text:"[Funkgeräusch] [Schritte im Raumanzug] Hallo {N}, hier ist Sam! Wir sind auf dem Mond gelandet, super gemacht! Ich laufe gerade über den Mondboden. Hier ist alles grau und staubig. Und weißt du was? Auf dem Mond kann man ganz leicht hüpfen, weil man dort viel leichter ist als auf der Erde. Ich soll Mondsteine einsammeln und mit zur Erde bringen. Forscher wollen sie untersuchen. Aber in meine Probenkiste passen nur runde Steine. Hilfst du mir beim Aussuchen? Schau auf dein Blatt. Oben in der Kiste siehst du einen runden Stein. So sehen die Steine aus, die wir brauchen. Darunter liegen viele Steine: runde, dreieckige und eckige. Manche sind groß, manche klein, manche liegen schief. Nimm deinen roten Stift und kreise alle runden Steine ein. Egal, ob groß oder klein: rund ist rund! Ganz unten liegen vier Steine in einer Reihe. Einer passt nicht zu den anderen. Welcher ist anders? Nimm deinen Bleistift und mach ein Kreuz auf diesen Stein. Jetzt drück auf Pause und sortiere in Ruhe. Danach blätterst du um. Bis gleich, Forscher {N}! [Piepen]"},
+ {id:"s08",page:9,who:"alex",title:"Das Sternbild",text:"[Funkgeräusch] [Piepen] {N}, hier ist Commander Alex. Die Mondsteine sind an Bord, hervorragend! Bevor ihr zurückfliegt, braucht ihr den richtigen Weg nach Hause. Früher haben Seefahrer und Entdecker die Sterne benutzt, um ihren Weg zu finden. Manche Sterne bilden zusammen ein Bild. Das nennt man Sternbild. Eins davon heißt Kassiopeia. Das kannst du sogar von deinem Fenster aus am Himmel sehen, wenn es dunkel ist! Auf deinem Blatt sind fünf große Sterne. Neben jedem Stern steht eine Zahl. Nimm deinen Bleistift. Fang bei der Eins an. Zieh eine Linie von der Eins zur Zwei. Dann von der Zwei zur Drei, von der Drei zur Vier und von der Vier zur Fünf. Und? Wie sieht das aus? Es ist ein Buchstabe! Weißt du, welcher? Danach malst du die fünf Sterne mit deinem gelben Stift an. Und wenn du Lust hast, malst du unten noch deinen eigenen Stern. Drück jetzt auf Pause und verbinde die Sterne in Ruhe. Danach geht es nach Hause. Bodenstation Ende! [Piepen]"},
+ {id:"s09",page:10,who:"sarah",title:"Rückflug und Landung",text:"[Funkgeräusch] [Triebwerk] {N}, hier ist Sarah! Wir fliegen nach Hause. Da vorne ist schon die Erde. Sie ist blau, wegen der vielen Meere. Ist das nicht wunderschön? Beim Landen passiert ganz viel hintereinander. Ich erzähle es dir. Zuerst fliegt unsere Kapsel durch das dunkle All auf die Erde zu. Dann tauchen wir in die Luft ein. Dabei wird es draußen so heiß, dass die Unterseite der Kapsel orange glüht. Dafür haben wir einen Hitzeschild, der uns schützt. [Rauschen] Danach öffnen sich die großen Fallschirme und bremsen uns ab. [Wusch] Und zum Schluss landen wir ganz sanft im Meer, und ein Schiff holt uns ab. [Wellen] Auf deinem Blatt sind vier Bilder davon, aber sie sind durcheinander. Was passiert zuerst? Schreib unter dieses Bild eine Eins, oder male einen Punkt in den Kreis. Was passiert danach? Da kommt die Zwei hin, oder zwei Punkte. Dann die Drei und zum Schluss die Vier. Ganz unten hängt unsere Kapsel an drei Fallschirmen. Male die Fallschirme mit deinem roten Stift an. Drück jetzt auf Pause und bring uns sicher nach Hause. Danach wartet auf der nächsten Seite eine Überraschung auf dich! [Wellen]"},
+ {id:"s10",page:11,who:"alex",title:"Deine Urkunde",text:"[Funkgeräusch] [Applaus] {N}, hier spricht Commander Alex. Hörst du das? Die ganze Bodenstation jubelt, für dich! Du hast die Ausrüstung sortiert, die Rakete gestartet, das Essen gezählt, das Instrumentenboard repariert, die Mondfähre gelandet, Mondsteine gesammelt, das Sternbild gefunden und die Kapsel sicher nach Hause gebracht. Das war richtig viel! Dafür bekommst du jetzt deine offizielle Astronauten-Urkunde. Darauf steht dein Name. Auf der Urkunde gibt es noch zwei leere Felder. Im Kreis gestaltest du dein eigenes Missionsabzeichen. Echte Astronauten haben für jede Mission so ein Abzeichen auf ihrem Anzug. Und im Helm malst du dein Gesicht. Unten schreibst du deinen Namen, oder du malst ein Zeichen, das nur dir gehört. Drück jetzt auf Pause und mach deine Urkunde fertig. Und dann zeig sie deiner Familie! Herzlichen Glückwunsch, Astronaut {N}. Bodenstation Ende. [Applaus] [Piepen]"}
+];
+
+/* ---------- Dummy-Ton: Browser-Stimme + einfache Geräusche ---------- */
+let AC=null;
+function ac(){ if(!AC){ try{AC=new (window.AudioContext||window.webkitAudioContext)();}catch(e){} } return AC; }
+function beep(f=880,d=.18,when=0){const c=ac(); if(!c) return; const o=c.createOscillator(),g=c.createGain(); o.frequency.value=f; o.type="sine"; g.gain.setValueAtTime(.0001,c.currentTime+when); g.gain.exponentialRampToValueAtTime(.25,c.currentTime+when+.02); g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+when+d); o.connect(g).connect(c.destination); o.start(c.currentTime+when); o.stop(c.currentTime+when+d+.05);}
+function noise(d=.6,lp=1800,vol=.18){const c=ac(); if(!c) return; const b=c.createBuffer(1,c.sampleRate*d,c.sampleRate),x=b.getChannelData(0); for(let i=0;i<x.length;i++) x[i]=(Math.random()*2-1)*(1-i/x.length); const s=c.createBufferSource(); s.buffer=b; const fl=c.createBiquadFilter(); fl.type="lowpass"; fl.frequency.value=lp; const g=c.createGain(); g.gain.value=vol; s.connect(fl).connect(g).connect(c.destination); s.start();}
+function playCue(t){ const k=t.toLowerCase();
+  if(k.includes("piep")){beep(880,.15);beep(1180,.15,.2);return 450;}
+  if(k.includes("funk")||k.includes("rausch")){noise(.7,2600,.12);beep(1400,.08,.65);return 850;}
+  if(k.includes("countdown")){beep(660,.12);return 300;}
+  if(k.includes("rakete")||k.includes("triebwerk")){noise(1.6,220,.4);return 1500;}
+  if(k.includes("applaus")){for(let i=0;i<14;i++) setTimeout(()=>noise(.06,5000,.25),i*90+Math.random()*40);return 1400;}
+  if(k.includes("wusch")){noise(.5,900,.3);return 550;}
+  if(k.includes("wellen")){noise(1.4,500,.18);return 1400;}
+  if(k.includes("stille")){return 2500;}
+  noise(.4,1200,.1); return 500; }
+
+/* ---------- Zustand ---------- */
+let state={i:0,name:"",segs:[],pos:0,playing:false,done:false};
+function parseHash(){ const h=(location.hash||"").slice(1); const m=h.match(/^(s\d\d)(?:_([A-Za-z0-9-]+))?$/); if(!m) return null; const i=TRACKS.findIndex(t=>t.id===m[1]); if(i<0) return null; return {i,name:(m[2]||"").replace(/-/g," ")}; }
+function segsOf(text,name){ const out=[]; const re=/\[([^\]]+)\]|([^\[]+)/g; let m;
+  while((m=re.exec(text))){ if(m[1]) out.push({cue:m[1]}); else { const t=m[2].replace(/\{N\}/g,name||"Astronaut").trim(); if(!t) continue; t.split(/(?<=[.!?])\s+/).forEach(s=>{ if(s.trim()) out.push({say:s.trim()}); }); } }
+  return out; }
+let voiceDe=null;
+function pickVoice(){ const v=(speechSynthesis.getVoices&&speechSynthesis.getVoices())||[]; voiceDe=v.find(x=>/^de/i.test(x.lang)&&/google|anna|petra|markus|helena|katja/i.test(x.name))||v.find(x=>/^de/i.test(x.lang))||null; }
+if("speechSynthesis" in window){ pickVoice(); speechSynthesis.onvoiceschanged=pickVoice; }
+
+let runId=0;
+function step(){ const my=runId; if(!state.playing) return;
+  if(state.pos>=state.segs.length){ state.playing=false; state.done=true; render(); return; }
+  const s=state.segs[state.pos]; updateProgress();
+  if(s.cue){ setCue(s.cue); const ms=playCue(s.cue); setTimeout(()=>{ if(my!==runId) return; state.pos++; step(); },ms); return; }
+  setCue("");
+  if(!("speechSynthesis" in window)){ setTimeout(()=>{ if(my!==runId) return; state.pos++; step(); }, s.say.length*55); return; }
+  const u=new SpeechSynthesisUtterance(s.say); u.lang="de-DE"; if(voiceDe) u.voice=voiceDe; const p=PEOPLE[TRACKS[state.i].who]; u.rate=p.rate; u.pitch=p.pitch;
+  let ended=false; const next=()=>{ if(ended||my!==runId) return; ended=true; state.pos++; step(); };
+  u.onend=next; u.onerror=next;
+  // Sicherheitsnetz, falls ein Gerät "onend" verschluckt
+  setTimeout(next, 2500+s.say.length*110);
+  speechSynthesis.speak(u);
+}
+function play(){ ac()&&AC.resume&&AC.resume(); if(state.done){state.pos=0;state.done=false;} state.playing=true; runId++; render(); step(); }
+function stop(){ state.playing=false; runId++; try{speechSynthesis.cancel();}catch(e){} }
+function pause(){ stop(); render(); }
+function back(){ const was=state.playing; stop(); let k=Math.max(0,(state.done?state.segs.length:state.pos)-1); let said=0; while(k>0){ if(state.segs[k].say&&++said>1) break; k--; } state.pos=Math.max(0,k); state.done=false; if(was){ play(); } else { render(); } }
+function restart(){ stop(); state.pos=0; state.done=false; play(); }
+function setCue(t){ const el=document.getElementById("cue"); if(el) el.textContent=t?("♪ "+t):""; }
+function updateProgress(){ const el=document.querySelector(".progress span"); if(el) el.style.width=Math.round(100*state.pos/Math.max(1,state.segs.length))+"%"; }
+
+/* Leuchtbalken im Display */
+let bars=[]; setInterval(()=>{ bars.forEach(b=>{ b.style.height=(state.playing? (6+Math.random()*30):6)+"px"; }); },140);
+
+const ICON={play:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>',
+ pause:'<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4.5" height="14" rx="1.5"/><rect x="13.5" y="5" width="4.5" height="14" rx="1.5"/></svg>',
+ back:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M11 6.5v11a1 1 0 0 1-1.6.8L2.8 13a1.2 1.2 0 0 1 0-2l6.6-5.3a1 1 0 0 1 1.6.8z"/><path d="M21 6.5v11a1 1 0 0 1-1.6.8L12.8 13a1.2 1.2 0 0 1 0-2l6.6-5.3a1 1 0 0 1 1.6.8z"/></svg>',
+ again:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 0 2.4-5.7"/><path d="M4 4v4h4"/></svg>'};
+
+function render(){
+  const app=document.getElementById("app"); const h=parseHash();
+  if(!h){ renderList(app); return; }
+  if(h.i!==state.i||h.name!==state.name||!state.segs.length){ stop(); state={i:h.i,name:h.name,segs:segsOf(TRACKS[h.i].text,h.name),pos:0,playing:false,done:false}; }
+  const t=TRACKS[state.i], p=PEOPLE[t.who];
+  const label= state.playing? "Pause" : state.done? "Nochmal hören" : state.pos>0? "Weiter hören" : "Funkspruch abspielen";
+  app.innerHTML=`
+   <div class="top"><span class="brand">Mondmission · Funkgerät</span><span class="chan">Kanal ${String(t.page).padStart(2,"0")}</span></div>
+   <section class="radio">
+     <div class="who"><div class="face" style="background:${p.color}">${p.ini}</div><div class="who-txt"><div class="who-name">${p.name}</div><div class="who-role">${p.role}${state.name?" · für "+esc(state.name):""}</div></div></div>
+     <h1 class="station">${t.title}</h1>
+     <p class="page-hint">Seite ${t.page} in deinem Heft</p>
+     <div class="screen" aria-hidden="true">${'<i class="bar"></i>'.repeat(22)}</div>
+     <div class="cue" id="cue" aria-live="polite"></div>
+     <button class="big ${state.playing?"playing":""}" id="big" aria-label="${label}">${state.playing?ICON.pause:ICON.play}</button>
+     <div class="biglabel">${label}</div>
+     <div class="progress" aria-hidden="true"><span></span></div>
+     <div class="row"><button class="small" id="back">${ICON.back} Zurück</button><button class="small" id="again">${ICON.again} Von vorn</button></div>
+   </section>
+   <p class="note"><a href="#" style="color:var(--muted)">Alle Funksprüche (für Eltern)</a><br>Testversion: Die Stimme kommt vom Gerät (Platzhalter). Später läuft hier das echte Hörspiel.</p>`;
+  bars=[...app.querySelectorAll(".bar")]; updateProgress();
+  document.getElementById("big").onclick=()=> state.playing?pause():play();
+  document.getElementById("again").onclick=restart; document.getElementById("back").onclick=back;
+}
+function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+function renderList(app){
+  stop(); state.segs=[];
+  let nm=""; try{nm=localStorage.getItem("mm_name")||"";}catch(e){}
+  if(!nm) nm="Mia";
+  const tok=nm.trim().replace(/[^A-Za-z0-9 -]/g,"").replace(/\s+/g,"-");
+  app.innerHTML=`
+   <div class="top"><span class="brand">Mondmission · Funkgerät</span></div>
+   <h1>Alle Funksprüche</h1>
+   <p class="note" style="text-align:left">Elternansicht. Die QR-Codes im Heft springen direkt zum passenden Funkspruch. Zum Testen hier einen Namen eintragen:</p>
+   <div class="field"><label for="nm" class="who-role">Name</label><input id="nm" value="${esc(nm)}" maxlength="20"></div>
+   <ul class="list">${TRACKS.map(t=>{const p=PEOPLE[t.who];return `<li><a href="#${t.id}${tok?"_"+tok:""}"><span class="dot" style="background:${p.color}">${t.page}</span><span><b>${t.title}</b><small>${p.name}</small></span></a></li>`;}).join("")}</ul>`;
+  document.getElementById("nm").oninput=e=>{ try{localStorage.setItem("mm_name",e.target.value);}catch(_){} const v=e.target.value.trim().replace(/[^A-Za-z0-9 -]/g,"").replace(/\s+/g,"-"); app.querySelectorAll(".list a").forEach((a,k)=>a.setAttribute("href","#"+TRACKS[k].id+(v?"_"+v:""))); };
+}
+addEventListener("hashchange",render);
+document.addEventListener("visibilitychange",()=>{ if(document.hidden&&state.playing) pause(); });
+render();
+</script>
+
+</body>
+</html>
