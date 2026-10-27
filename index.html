@@ -218,7 +218,7 @@ const ST=[
 const $=s=>document.querySelector(s);
 const store={get(k,d){try{const v=localStorage.getItem("mm_"+k);return v===null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem("mm_"+k,JSON.stringify(v))}catch(e){}}};
 const qs=new URLSearchParams(location.search);
-let order=null, cur=0, seq=[], part=0, playing=false, actx=null, totals=[], doneSet=new Set(store.get("done",[]));
+let gen=0, order=null, cur=0, seq=[], part=0, playing=false, actx=null, totals=[], doneSet=new Set(store.get("done",[]));
 
 // ---------- Personalisierung ----------
 async function loadOrder(){
@@ -260,7 +260,7 @@ const au=$("#au");
 function fmt(s){s=Math.max(0,Math.round(s||0));return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")}
 function setStation(i,autoplay){
   cur=Math.max(0,Math.min(ST.length-1,i)); const s=ST[cur], c=CREW[s.who];
-  seq=clips(s); part=0; stopUI(); au.removeAttribute("src");
+  gen++; au.pause(); playing=false; seq=clips(s); part=0; stopUI(); au.removeAttribute("src"); au.load();
   $("#title").textContent=s.t; $("#kicker").textContent="Funkspruch · "+s.k;
   $("#who").textContent=c.name+" · "+c.role; $("#spImg").src=c.img;
   $("#prog").style.width="0"; $("#time").textContent=""; $("#state").textContent="Bereit zum Empfang";
@@ -274,8 +274,8 @@ function playPart(){
   const p=au.play(); if(p) p.catch(()=>{ stopUI(); $("#hint").textContent="Tippe nochmal auf den gelben Knopf."; });
 }
 async function start(){
-  ctx(); playing=true; uiPlay(); $("#state").textContent="Funkverbindung …";
-  if(part===0 && !au.currentTime){ await sfx("on"); }
+  const g=gen; ctx(); playing=true; uiPlay(); $("#state").textContent="Funkverbindung …";
+  if(part===0 && !au.currentTime){ await sfx("on"); if(g!==gen||!playing) return; }
   if(au.src && !au.ended && au.currentTime>0){ au.play(); } else playPart();
   $("#state").textContent="Empfang läuft"; media();
 }
@@ -283,8 +283,9 @@ function pause(){ au.pause(); playing=false; stopUI(); $("#state").textContent="
 function uiPlay(){ $("#radio").classList.add("playing"); $("#speaker").classList.add("talk"); $("#playIco").innerHTML='<path d="M6 5h4v14H6zM14 5h4v14h-4z"/>'; $("#play").setAttribute("aria-label","Pause"); $("#hint").textContent="Hör gut zu …"; }
 function stopUI(){ $("#radio").classList.remove("playing"); $("#speaker").classList.remove("talk"); $("#playIco").innerHTML='<path d="M8 5v14l11-7z"/>'; $("#play").setAttribute("aria-label","Abspielen"); }
 au.addEventListener("ended",async()=>{
-  if(part<seq.length-1){ part++; if(part===seq.length-1){} await sfx("beep"); if(playing) playPart(); }
-  else{ playing=false; stopUI(); await sfx("off"); finished(); }
+  const g=gen;
+  if(part<seq.length-1){ part++; await sfx("beep"); if(playing&&g===gen) playPart(); }
+  else{ playing=false; stopUI(); await sfx("off"); if(g===gen) finished(); }
 });
 au.addEventListener("timeupdate",()=>{
   const d=au.duration||0, frac=d?au.currentTime/d:0, w=((part+frac)/seq.length)*100;
