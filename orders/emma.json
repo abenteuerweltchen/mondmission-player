@@ -1,0 +1,50 @@
+{
+ "name": "Emma",
+ "g": "w",
+ "clips": {
+  "s00": [
+   "audio/s00_open_emma.mp3",
+   "audio/s00_close_emma.mp3"
+  ],
+  "s01": [
+   "audio/s01_open_emma.mp3",
+   "audio/s01_close_emma.mp3"
+  ],
+  "s02": [
+   "audio/s02_open_emma.mp3",
+   "audio/s02_close_emma.mp3"
+  ],
+  "s03": [
+   "audio/s03_open_emma.mp3",
+   "audio/s03_close_emma.mp3"
+  ],
+  "s04": [
+   "audio/s04_open_emma.mp3",
+   "audio/s04_close_emma.mp3"
+  ],
+  "s05": [
+   "audio/s05_open_emma.mp3",
+   "audio/s05_close_emma.mp3"
+  ],
+  "s06": [
+   "audio/s06_open_emma.mp3",
+   "audio/s06_close_emma.mp3"
+  ],
+  "s07": [
+   "audio/s07_open_emma.mp3",
+   "audio/s07_close_emma.mp3"
+  ],
+  "s08": [
+   "audio/s08_open_emma.mp3",
+   "audio/s08_close_emma.mp3"
+  ],
+  "s09": [
+   "audio/s09_open_emma.mp3",
+   "audio/s09_close_emma.mp3"
+  ],
+  "s10": [
+   "audio/s10_open_emma.mp3",
+   "audio/s10_close_emma.mp3"
+  ]
+ }
+}
