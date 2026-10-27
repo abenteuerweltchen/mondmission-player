@@ -1,1 +1,22 @@
-
+OK audio/s00_open_moses.mp3 96163
+OK audio/s00_close_moses.mp3 84878
+OK audio/s01_open_moses.mp3 82370
+OK audio/s01_close_moses.mp3 64398
+OK audio/s02_open_moses.mp3 69413
+OK audio/s02_close_moses.mp3 75683
+OK audio/s03_open_moses.mp3 74429
+OK audio/s03_close_moses.mp3 61890
+OK audio/s04_open_moses.mp3 48933
+OK audio/s04_close_moses.mp3 76937
+OK audio/s05_open_moses.mp3 64398
+OK audio/s05_close_moses.mp3 71921
+OK audio/s06_open_moses.mp3 73175
+OK audio/s06_close_moses.mp3 75683
+OK audio/s07_open_moses.mp3 73175
+OK audio/s07_close_moses.mp3 63144
+OK audio/s08_close_moses.mp3 86132
+OK audio/s09_open_moses.mp3 70667
+OK audio/s09_close_moses.mp3 92401
+OK audio/s10_open_moses.mp3 114135
+OK audio/s10_close_moses.mp3 116643
+OK audio/s08_open_moses.mp3 64398
