@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#7a6248">
+<title>Detektiv-Handy – Der Fall der verschwundenen Dumplings</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DynaPuff:wght@500;600&family=Nunito:wght@500;700;800&display=swap">
+<link rel="icon" href="img/wong.jpg">
+<style>
+:root{
+  --bg:#f6efe2; --paper:#fffdf8; --line:#e3d6bf; --brown:#7a6248; --brown2:#5e4a35; --text:#2e3a46; --muted:#6f6458;
+  --red:#c0392b; --ok:#3e8e5e; --ice:#dcecf3; --ice2:#9cc3d5; --gold:#e2b162;
+  --r:20px; --shadow:0 10px 28px -14px rgba(60,40,20,.45);
+  --display:"DynaPuff",system-ui,sans-serif; --body:"Nunito",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:17px;line-height:1.5;
+  padding:0 max(16px,env(safe-area-inset-right)) 48px max(16px,env(safe-area-inset-left));-webkit-tap-highlight-color:transparent}
+button,input{font:inherit;color:inherit}
+button{border:0;background:none;cursor:pointer}
+img{display:block;max-width:100%}
+.wrap{max-width:560px;margin:0 auto}
+header.top{display:flex;align-items:center;justify-content:space-between;padding:14px 0 10px;gap:10px}
+.brand{font-family:var(--display);font-weight:600;color:var(--brown);font-size:17px;text-decoration:none;line-height:1.1}
+.brand small{display:block;font-family:var(--body);font-weight:800;font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted)}
+.chip{background:var(--paper);border:2px solid var(--line);border-radius:999px;padding:6px 12px;font-weight:800;font-size:13px;color:var(--brown)}
+.card{background:var(--paper);border:2px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:18px;margin-top:14px;position:relative}
+.kicker{font-weight:800;font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:var(--red)}
+h1,h2,h3{font-family:var(--display);font-weight:600;color:var(--brown2);line-height:1.15;margin:0}
+h1{font-size:clamp(24px,7vw,32px)} h2{font-size:24px} h3{font-size:19px}
+.hero{border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);aspect-ratio:1123/794;position:relative;background:#2b1d12}
+.hero img{width:100%;height:100%;object-fit:cover}
+.stamp{display:inline-block;border:3px solid var(--red);color:var(--red);font-family:var(--display);font-weight:600;
+  padding:2px 10px;border-radius:8px;transform:rotate(-6deg);font-size:14px;letter-spacing:1px;text-transform:uppercase}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:14px;padding:15px 18px;border-radius:16px;
+  background:var(--brown);color:#fff;font-weight:800;font-size:18px;box-shadow:0 5px 0 var(--brown2);transition:transform .08s}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--brown2)}
+.btn.red{background:var(--red);box-shadow:0 5px 0 #8e2a1f}
+.btn.ghost{background:transparent;color:var(--brown);border:2px solid var(--brown);box-shadow:none}
+.muted{color:var(--muted);font-size:15px}
+/* Player */
+.player{display:flex;align-items:center;gap:14px;margin-top:14px;background:#efe4d0;border-radius:18px;padding:12px}
+.avatar{width:64px;height:64px;border-radius:50%;object-fit:cover;object-position:50% 15%;border:3px solid var(--paper);box-shadow:0 2px 8px rgba(0,0,0,.15);flex:none}
+.play{width:60px;height:60px;border-radius:50%;background:var(--brown);display:grid;place-items:center;flex:none;box-shadow:0 4px 0 var(--brown2)}
+.play svg{width:26px;height:26px;fill:#fff}
+.play[disabled]{background:#bfb2a0;box-shadow:none;cursor:default}
+.ptext{min-width:0;font-weight:700;font-size:15px;line-height:1.3}
+.ptext b{display:block;font-family:var(--display);font-weight:600;font-size:17px;color:var(--brown2)}
+/* Transcript */
+.lines{margin-top:12px}
+.line{display:flex;gap:10px;margin-top:12px;align-items:flex-start}
+.line img{width:40px;height:40px;border-radius:50%;object-fit:cover;object-position:50% 15%;flex:none}
+.bubble{background:#fff;border:2px solid var(--line);border-radius:4px 16px 16px 16px;padding:10px 12px;white-space:pre-line;min-width:0}
+.bubble .who{display:block;font-weight:800;font-size:13px;color:var(--red);margin-bottom:2px}
+details summary{cursor:pointer;font-weight:800;color:var(--brown);margin-top:12px;list-style:none}
+details summary::before{content:"▸ ";} details[open] summary::before{content:"▾ ";}
+/* Gate */
+.gate input{width:100%;margin-top:10px;padding:14px;border-radius:14px;border:3px solid var(--line);background:#fff;
+  font-family:var(--display);font-size:24px;letter-spacing:4px;text-align:center;text-transform:uppercase}
+.gate input:focus{outline:none;border-color:var(--brown)}
+.msg{margin-top:10px;font-weight:800;min-height:1.4em}
+.msg.bad{color:var(--red)} .msg.good{color:var(--ok)}
+.shake{animation:shake .45s}
+@keyframes shake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+/* Fall-Akte */
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px}
+.suspect{text-align:center;font-size:12px;font-weight:800;line-height:1.2}
+.suspect img{width:100%;aspect-ratio:1;border-radius:14px;object-fit:cover;object-position:50% 12%;filter:grayscale(1) opacity(.55);border:2px solid var(--line)}
+.suspect.seen img{filter:none;border-color:var(--brown)}
+.suspect span{display:block;margin-top:4px}
+.list{margin-top:10px}
+.item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-radius:14px;background:#fff;border:2px solid var(--line);margin-top:8px;font-weight:800;text-decoration:none;color:var(--text)}
+.item.locked{opacity:.55}
+.item .tag{font-size:12px;color:var(--muted)}
+/* Chat */
+.phone{background:#e9dfcd;border-radius:26px;padding:12px;margin-top:14px;box-shadow:var(--shadow);border:2px solid var(--line)}
+.chathead{display:flex;align-items:center;gap:10px;background:var(--brown);color:#fff;border-radius:18px;padding:8px 12px}
+.chathead img{width:42px;height:42px;border-radius:50%;object-fit:cover;object-position:50% 15%;border:2px solid #fff}
+.chathead b{font-family:var(--display);font-weight:600;display:block;line-height:1.1}
+.chathead small{font-size:12px;opacity:.85}
+.chat{min-height:260px;padding:12px 2px;display:flex;flex-direction:column;gap:8px}
+.cm{max-width:84%;padding:9px 13px;border-radius:16px;white-space:pre-line;animation:pop .25s ease-out}
+.cm.in{background:#fff;align-self:flex-start;border-bottom-left-radius:4px}
+.cm.out{background:#cfe5d4;align-self:flex-end;border-bottom-right-radius:4px;font-weight:700}
+@keyframes pop{from{transform:scale(.85);opacity:0}to{transform:none;opacity:1}}
+.typing{display:inline-flex;gap:4px;padding:12px 14px}
+.typing i{width:8px;height:8px;border-radius:50%;background:#a99a86;animation:dot 1s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes dot{0%,60%,100%{transform:none;opacity:.5}30%{transform:translateY(-5px);opacity:1}}
+.compose{display:flex;gap:8px}
+.compose input{flex:1;min-width:0;padding:12px 14px;border-radius:999px;border:2px solid var(--line);background:#fff;font-size:17px}
+.compose button{width:50px;height:50px;border-radius:50%;background:var(--brown);display:grid;place-items:center;flex:none}
+.compose button svg{width:22px;height:22px;fill:#fff}
+.compose input:disabled,.compose button:disabled{opacity:.5}
+/* Door */
+.doorbox{position:relative;margin:14px auto 0;width:min(100%,320px);aspect-ratio:3/4;perspective:900px}
+.inside{position:absolute;inset:0;border-radius:18px;background:radial-gradient(circle at 50% 60%,#ffffff,var(--ice) 55%,var(--ice2));
+  display:grid;place-items:center;text-align:center;overflow:hidden;border:4px solid var(--brown)}
+.inside .basket{font-size:76px;line-height:1;filter:drop-shadow(0 6px 6px rgba(0,0,0,.2));opacity:0;transform:scale(.6);transition:all .6s .8s}
+.inside .fog{position:absolute;inset:auto -20% -10% -20%;height:60%;background:radial-gradient(ellipse at center,rgba(255,255,255,.95),rgba(255,255,255,0) 70%);opacity:0;transition:opacity 1.2s .4s}
+.door{position:absolute;inset:0;transform-origin:left center;transition:transform 1.4s cubic-bezier(.5,.05,.25,1);transform-style:preserve-3d}
+.door svg{width:100%;height:100%;display:block}
+.open .door{transform:rotateY(-105deg)}
+.open .basket{opacity:1;transform:none}
+.open .fog{opacity:1}
+.wheels{display:flex;justify-content:center;gap:12px;margin-top:16px}
+.wheel{display:flex;flex-direction:column;align-items:center;gap:6px}
+.wheel button{width:62px;height:40px;border-radius:12px;background:#efe4d0;font-size:20px;font-weight:800;color:var(--brown)}
+.wheel div{width:62px;height:72px;border-radius:14px;background:#fff;border:3px solid var(--brown);display:grid;place-items:center;
+  font-family:var(--display);font-size:40px;color:var(--brown2)}
+.confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:9}
+.confetti i{position:absolute;top:-20px;width:10px;height:16px;border-radius:2px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+.lock{font-size:46px;text-align:center;line-height:1}
+footer{text-align:center;margin-top:26px;font-size:13px;color:var(--muted)}
+footer a{color:var(--muted)}
+.hide{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="#" id="homeLink">Detektiv-Handy<small>Dumpling-Detektive</small></a>
+    <span class="chip" id="who">…</span>
+  </header>
+  <main id="app"></main>
+  <footer>Abenteuerweltchen · <a href="#" id="homeLink2">Fall-Akte</a></footer>
+</div>
+<div class="confetti" id="confetti"></div>
+
+<script>
+/* ===== Einstellungen ===== */
+const AUDIO = false;              // Ton kommt später (ElevenLabs)
+const PASS_PAUL = ["DUMPLING","DUMPLINGS"];
+const DOOR_CODE = "736";
+
+/* ===== Figuren ===== */
+const P = {
+  wong:{n:"Chefkoch Wong", img:"img/wong.jpg"},
+  leo:{n:"Kellner Leo", img:"img/leo_k.jpg"},
+  greta:{n:"Sous-Chefin Greta", img:"img/greta_k.jpg"},
+  paul:{n:"Spüler Paul", img:"img/paul_k.jpg"},
+  mila:{n:"Konditorin Mila", img:"img/mila_k.jpg"},
+  tarik:{n:"Lieferfahrer Tarik", img:"img/tarik_k.jpg"}
+};
+
+/* ===== Botschaften ({N} = Name) ===== */
+const ST = {
+ 1:{t:"Ein Notruf aus der Küche", l:[["wong","Hallo {N}!\nIch habe gehört, du und dein Team seid die besten Detektive der ganzen Stadt – genau euch brauche ich jetzt! Ich bin Wong, Chefkoch der Goldenen Teigtasche. Heute um 19 Uhr kommt Paula Pfeffer, die strengste Restaurantkritikerin des Landes. Für sie habe ich 120 Dumplings von Hand gefaltet. Um 14:30 Uhr lagen sie noch im Kühlregal – um 15:00 Uhr war das Blech leer.\n\nKeine Einbruchspuren. Es war jemand aus meinem Team – und einer von fünf Leuten sagt nicht die Wahrheit. Stellt euer Detektiv-Team zusammen und bringt mir meine Dumplings zurück!"]]},
+ 2:{t:"Der Tatort", l:[["wong","Gut gemacht, {N}!\nDein Team steht. Jetzt zum Tatort: dem Kühlregal. Nach einem Diebstahl im letzten Jahr habe ich es mit Lichtschranken gesichert – unsichtbare Strahlen, kreuz und quer. Wer einen berührt, löst den Alarm aus.\n\nHinter den Strahlen wartet das erste Beweisstück. Schafft es dein Detektiv-Team hindurch, ohne Alarm auszulösen?"]]},
+ 3:{t:"Zeuge Nr. 1: Kellner Leo", w:"leo", l:[["wong","Achtung, {N}!\nDer Täter ist einer aus meinem Team. Deshalb schickt mir jeder Zeuge seine Aussage verschlüsselt – damit niemand sonst mitlesen kann.\n\nKellner Leo benutzt die Caesar-Verschlüsselung: Jeder Buchstabe ist im Alphabet um ein paar Stellen verschoben. Um wie viele? Das müsst ihr selbst herausfinden. Kleiner Tipp: Leos Aussage beginnt mit dem Wort „ICH“."],["leo","Ich helfe doch gern! Meine Aussage gibt's aber nur verschlüsselt – Befehl vom Chef."]]},
+ 4:{t:"Zeuge Nr. 2: Spüler Paul", w:"paul", l:[["wong","Hör gut zu, {N}!\nPaul ist so schüchtern, dass er kaum ein Wort herausbringt. Aber er hat etwas gehört. Erzählen will er es nur echten Detektiven – deshalb hat er ein Passwort in Morsezeichen versteckt.\n\nKnackt das Passwort mit der Morse-Staffel und tippt es hier ein. Dann spricht Paul mit euch!"],["paul","Ähm … nur mit Passwort. Tut mir leid."]]},
+ 5:{t:"Zeugin Nr. 3: Greta", w:"greta", l:[["wong","Vorsicht, {N}!\nGreta schreibt alle Rezepte in Spiegelschrift – damit niemand ihre Geheimrezepte abschreibt. Auch ihre Aussage hat sie so verfasst.\n\nAber Greta gibt sie nur heraus, wenn ihr beweist, dass ihr ruhige Hände habt."],["greta","In meiner Küche fällt nichts herunter – kein Teller, kein Löffel, keine einzige Teigtasche. Zeigt mir, dass ihr das auch könnt!"]]},
+ 6:{t:"Zeugin Nr. 4: Mila", w:"mila", l:[["wong","Spannend, {N}!\nMila bestätigt Greta: Die beiden waren zusammen im Vorratskeller. Aber auf dem Weg dorthin hat Mila im Personalraum etwas Merkwürdiges entdeckt.\n\nSie hat das Beweisstück in einem Wortgitter versteckt. Findet alle Küchenwörter – die Buchstaben, die übrig bleiben, verraten, was sie gefunden hat."],["mila","Ich verrate es euch in Rätselform. Detektive lieben doch Rätsel, oder?"]]},
+ 7:{t:"Zeuge Nr. 5: Tarik", w:"tarik", l:[["wong","Fast geschafft, {N}!\nTarik hat um 14:50 Uhr Gemüse an die Hintertür geliefert. Paul hat den Lieferschein unterschrieben – die beiden waren also zur Tatzeit zusammen an der Hintertür."],["tarik","Auf dem Rückweg habe ich Mehlspuren auf dem Küchenboden gesehen. Wohin sie führen, habe ich auf meinem Lieferschein versteckt – mit den Nummern meiner Zutaten. Lesen kann ihn nur, wer meine Lieferung am Geschmack erkennt!"]]},
+ 8:{t:"Die Akte schließen", l:[["wong","Alle Aussagen liegen vor, {N}!\nJetzt seid ihr dran. Gute Detektive vertrauen nicht dem Bauchgefühl, sondern den Beweisen.\n\nTragt alles in die Alibi-Tabelle ein: Wer war wo? Und wer kann das bestätigen? Nur bei einer Person passt nichts zusammen. Einigt euch auf einen Hauptverdächtigen – und dann teilt ihn mir mit: Tippt hier unten auf „Weiter“."]]},
+ 9:{t:"Der Kühlraum", l:[["wong","Leo?! Das hätte ich nie gedacht, {N}!\nDie Mehlspuren führen direkt zum Kühlraum. Aber Leo hat das Zahlenschloss neu eingestellt – und er sagt kein Wort.\n\nZum Glück hat er in der Eile einen Zettel mit Hinweisen auf den Code liegen lassen. Knackt das Schloss – dann wissen wir, ob die Dumplings wirklich dort sind!"],["leo","Ich sag gar nichts. Den Code findet ihr nie!"]]},
+ 10:{t:"Fall gelöst!", l:[["leo","Ich geb's zu. Ich wollte die Dumplings heute Abend „zufällig“ wiederfinden – als Held. Dann hätte Chefkoch Wong mich bestimmt zum Oberkellner gemacht. Das war eine blöde Idee. Es tut mir leid."],["wong","Danke, {N}!\nDu und dein Detektiv-Team habt den Fall in Rekordzeit gelöst. Die Dumplings sind gerettet, die Kritikerin kann kommen. Als Dankeschön habe ich euch etwas in den Kühlraum gelegt …"]]}
+};
+const PAUL_AUSSAGE = "Ähm … hallo. Ich … ich sag's ganz schnell.\nUm zwei Uhr stand ich am Spülbecken. Da hat Leo den letzten Stapel Servietten auf den Tisch gelegt und gerufen: „Fertig! Alle Servietten gefaltet!“\nUm zwei Uhr schon! Danach war Leo weg. Wohin, weiß ich nicht.\nÄhm … das war's. Viel Glück, Detektive!";
+
+/* ===== Zustand ===== */
+const q = new URLSearchParams(location.search);
+const K = (q.get("k")||"").replace(/[^a-z0-9_-]/gi,"").slice(0,40);
+let order = null;
+const SKEY = "dumpling_" + (K||"demo");
+let S = {v:[], paul:false, solved:false, door:false};
+try{ const raw = localStorage.getItem(SKEY); if(raw) S = Object.assign(S, JSON.parse(raw)); }catch(e){}
+function save(){ try{ localStorage.setItem(SKEY, JSON.stringify(S)); }catch(e){} }
+function nm(){ return order && order.name ? order.name : "Detektive"; }
+function fill(t){ return t.replace(/\{N\}/g, nm()); }
+function esc(t){ return t.replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+function link(s){ const p = new URLSearchParams(); if(s!==undefined) p.set("s", s); if(K) p.set("k", K); return "?" + p.toString(); }
+const app = document.getElementById("app");
+function go(s){ history.pushState({}, "", link(s)); route(); window.scrollTo(0,0); }
+window.addEventListener("popstate", route);
+["homeLink","homeLink2"].forEach(id=>document.getElementById(id).onclick=e=>{e.preventDefault();go();});
+
+/* ===== Bausteine ===== */
+const playIcon = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+function player(whos, label){
+  const av = whos.map((w,i)=>`<img class="avatar" src="${P[w].img}" alt="" style="${i?"margin-left:-22px":""}">`).join("");
+  return `<div class="player"><div style="display:flex;flex:none">${av}</div>
+    <div class="ptext"><b>${esc(label||whos.map(w=>P[w].n.split(" ").pop()).join(" & "))}</b>${AUDIO ? "Zum Abspielen tippen" : "Hörspiel folgt bald"}</div>
+    <button class="play" ${AUDIO?"":"disabled"} aria-label="Abspielen" style="margin-left:auto">${playIcon}</button></div>`;
+}
+function lines(l){
+  return `<div class="lines">` + l.map(([w,t])=>`<div class="line"><img src="${P[w].img}" alt=""><div class="bubble"><span class="who">${P[w].n}</span>${esc(fill(t))}</div></div>`).join("") + `</div>`;
+}
+function lockCard(title, text, btn, target){
+  return `<div class="card"><div class="lock">🔒</div><h2 style="text-align:center;margin-top:8px">${title}</h2>
+    <p style="text-align:center">${text}</p>${btn?`<button class="btn" id="lockBtn">${btn}</button>`:""}</div>`;
+}
+function confetti(){
+  const box = document.getElementById("confetti"); const cols = ["#c0392b","#e2b162","#3e8e5e","#7a6248","#9cc3d5"];
+  for(let i=0;i<80;i++){ const c=document.createElement("i"); c.style.left=Math.random()*100+"vw";
+    c.style.background=cols[i%cols.length]; c.style.animationDuration=(2+Math.random()*2)+"s"; c.style.animationDelay=(Math.random()*.6)+"s";
+    box.appendChild(c); setTimeout(()=>c.remove(),5000); }
+}
+
+/* ===== Seiten ===== */
+function home(){
+  const seen = n => S.v.includes(n);
+  const sus = [["leo",3],["greta",5],["paul",4],["mila",6],["tarik",7]];
+  app.innerHTML = `
+  <div class="hero"><img src="img/cover.jpg" alt="Der Fall der verschwundenen Dumplings"></div>
+  <div class="card"><span class="stamp">Streng vertraulich</span>
+    <h1 style="margin-top:12px">Hallo ${esc(nm())}!</h1>
+    <p>Das ist euer Detektiv-Handy. Scannt den QR-Code auf jeder Botschaft – dann öffnet sie sich hier.</p>
+    <button class="btn" id="start">Botschaft Nr. 1 öffnen</button></div>
+  <div class="card"><div class="kicker">Fall-Akte</div><h2>Die Verdächtigen</h2>
+    <div class="grid">${sus.map(([w,s])=>`<div class="suspect ${seen(s)?"seen":""}"><img src="${P[w].img}" alt=""><span>${P[w].n.split(" ").pop()}</span></div>`).join("")}</div>
+    <p class="muted">Farbig = schon befragt.</p>
+    <div class="list">${Object.keys(ST).map(Number).filter(seen).map(s=>`<a class="item" href="${link(s)}" data-s="${s}"><span>Nr. ${s}: ${ST[s].t}</span><span class="tag">ansehen ›</span></a>`).join("") || `<p class="muted">Noch keine Botschaft geöffnet.</p>`}</div>
+  </div>`;
+  document.getElementById("start").onclick=()=>go(1);
+  app.querySelectorAll(".item").forEach(a=>a.onclick=e=>{e.preventDefault();go(+a.dataset.s);});
+}
+
+function station(s){
+  const d = ST[s];
+  if(s===9 && !S.solved){ app.innerHTML = lockCard("Botschaft Nr. 9 ist gesperrt","Zuerst müsst ihr Chefkoch Wong den Täter nennen.","Zum Chat mit Chefkoch Wong"); document.getElementById("lockBtn").onclick=()=>go("chat"); return; }
+  if(s===10 && !S.door){ app.innerHTML = lockCard("Botschaft Nr. 10 ist gesperrt", S.solved?"Erst muss die Kühlraum-Tür auf!":"Zuerst müsst ihr Chefkoch Wong den Täter nennen.", S.solved?"Zur Kühlraum-Tür":"Zum Chat mit Chefkoch Wong"); document.getElementById("lockBtn").onclick=()=>go(S.solved?"tuer":"chat"); return; }
+  if(!S.v.includes(s)){ S.v.push(s); save(); }
+  app.innerHTML = `<div class="card"><div class="kicker">Botschaft Nr. ${s}</div><h2>${d.t}</h2>
+    ${player([...new Set(d.l.map(x=>x[0]))])}
+    <details open><summary>Mitlesen</summary>${lines(d.l)}</details></div><div id="extra"></div>`;
+  const ex = document.getElementById("extra");
+  if(s===4) paulGate(ex);
+  if(s===8){ ex.innerHTML = `<div class="card"><h3>Habt ihr euch geeinigt?</h3><p class="muted">Erst die Alibi-Tabelle ausfüllen und einen Hauptverdächtigen wählen.</p><button class="btn red" id="weiter">Weiter</button></div>`; document.getElementById("weiter").onclick=()=>go("chat"); }
+  if(s===9){ ex.innerHTML = `<div class="card"><p>Code geknackt? Dann scannt den QR-Code auf Leos Zettel – oder tippt hier:</p><button class="btn" id="zt">Zur Kühlraum-Tür</button></div>`; document.getElementById("zt").onclick=()=>go("tuer"); }
+  if(s===10){ ex.innerHTML = `<div class="card" style="text-align:center"><span class="stamp">Fall gelöst</span><h2 style="margin-top:12px">Glückwunsch, ${esc(nm())}!</h2><p>Jetzt schnell zum Kühlraum – dort wartet euer Dankeschön!</p></div>`; confetti(); }
+}
+
+function paulGate(ex){
+  const show = () => { ex.innerHTML = `<div class="card"><div class="kicker">Pauls Zeugenaussage</div><h2>Paul spricht!</h2>${player(["paul"],"Spüler Paul")}${lines([["paul",PAUL_AUSSAGE]])}</div>`; };
+  if(S.paul){ show(); return; }
+  ex.innerHTML = `<div class="card gate"><div class="kicker">Gesperrt</div><h3>Pauls Passwort</h3>
+    <p class="muted">Das Wort aus eurer Morse-Staffel:</p>
+    <input id="pw" maxlength="16" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="? ? ? ? ? ? ? ?">
+    <button class="btn" id="ok">Freischalten</button><div class="msg" id="m"></div></div>`;
+  const pw = document.getElementById("pw"), m = document.getElementById("m"); let tries=0;
+  const check = () => {
+    const v = pw.value.toUpperCase().replace(/[^A-ZÄÖÜ]/g,"");
+    if(!v) return;
+    if(PASS_PAUL.includes(v)){ S.paul=true; save(); show(); ex.scrollIntoView({behavior:"smooth"}); return; }
+    tries++; pw.classList.remove("shake"); void pw.offsetWidth; pw.classList.add("shake");
+    m.className="msg bad";
+    m.textContent = tries<3 ? "Paul schüttelt den Kopf. Das ist nicht sein Passwort." : "Tipp: Das Wort hat 8 Buchstaben. Prüft jeden Morse-Buchstaben noch einmal mit der Tabelle.";
+  };
+  document.getElementById("ok").onclick=check; pw.onkeydown=e=>{ if(e.key==="Enter") check(); };
+}
+
+/* ===== Chat mit Chefkoch Wong ===== */
+function chat(){
+  app.innerHTML = `<div class="phone"><div class="chathead"><img src="${P.wong.img}" alt=""><div><b>Chefkoch Wong</b><small id="st">online</small></div></div>
+    <div class="chat" id="c"></div>
+    <div class="compose"><input id="in" placeholder="Name des Täters …" autocomplete="off" disabled><button id="send" disabled aria-label="Senden"><svg viewBox="0 0 24 24"><path d="M3 20l18-8L3 4v6l12 2-12 2z"/></svg></button></div></div>
+    <div id="after"></div>`;
+  const c = document.getElementById("c"), inp = document.getElementById("in"), send = document.getElementById("send"), st = document.getElementById("st");
+  let busy=false, wrong=0;
+  const add = (t, cls) => { const d=document.createElement("div"); d.className="cm "+cls; d.textContent=t; c.appendChild(d); d.scrollIntoView({behavior:"smooth",block:"end"}); };
+  const say = (msgs, done) => {
+    busy=true; inp.disabled=send.disabled=true;
+    let i=0;
+    const next = () => {
+      if(i>=msgs.length){ busy=false; st.textContent="online"; if(done) done(); else { inp.disabled=send.disabled=false; inp.focus(); } return; }
+      st.textContent="schreibt …";
+      const ty=document.createElement("div"); ty.className="cm in typing"; ty.innerHTML="<i></i><i></i><i></i>"; c.appendChild(ty); ty.scrollIntoView({behavior:"smooth",block:"end"});
+      const m = fill(msgs[i++]);
+      setTimeout(()=>{ ty.remove(); add(m,"in"); setTimeout(next, 450); }, Math.min(2200, 700 + m.length*18));
+    };
+    next();
+  };
+  const win = () => {
+    S.solved=true; save();
+    document.getElementById("after").innerHTML = `<div class="card" style="text-align:center"><span class="stamp">Täter überführt</span><p style="margin-top:12px">Botschaft Nr. 9 ist freigeschaltet!</p><button class="btn" id="b9">Botschaft Nr. 9 öffnen</button></div>`;
+    document.getElementById("b9").onclick=()=>go(9); confetti();
+  };
+  if(S.solved){
+    add("Ihr habt den Fall schon gelöst – es war Leo!","in"); win(); return;
+  }
+  say(["Hallo {N}! 👋","Ich halte es nicht mehr aus. Die Kritikerin kommt bald – und mein Kühlregal ist immer noch leer! 😰","Ihr habt alle Zeugen befragt. Ihr habt die Alibi-Tabelle ausgefüllt. Jetzt brauche ich eure Antwort …","Wer hat meine Dumplings versteckt? Schreibt mir den Namen! 🕵️"]);
+  const answer = () => {
+    if(busy) return;
+    const raw = inp.value.trim(); if(!raw) return;
+    add(raw,"out"); inp.value="";
+    const v = raw.toLowerCase().replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/[^a-z ]/g," ");
+    const has = w => new RegExp("\\b"+w).test(v);
+    const names = ["leo","greta","paul","mila","tarik"].filter(has);
+    if(names.length>1){ say(["Halt, halt – nur EIN Name bitte! Auf wen habt ihr euch geeinigt?"]); return; }
+    if(names[0]==="leo" || (!names.length && has("kellner"))){
+      say(["LEO?! 😳","Mein netter, hilfsbereiter Kellner Leo …?","Moment. Die Kellnerschürze voller Teigreste … die Servietten, die schon um zwei fertig waren … und er behauptet, er hätte bis vier gefaltet!","Ihr habt recht. Ihr seid wirklich die besten Detektive der Stadt! 🏆","Aber wo sind meine Dumplings? Schnell – Botschaft Nr. 9!"], win);
+      return;
+    }
+    wrong++;
+    const R = {
+      greta:"Greta? Hmm … Greta war mit Mila im Vorratskeller und hat Mehl gezählt. Die beiden haben sich die ganze Zeit gesehen.",
+      mila:"Mila? Nein, nein. Mila war mit Greta im Vorratskeller. Die zwei bestätigen sich gegenseitig.",
+      paul:"Paul? Der arme Paul stand mit Tarik an der Hintertür und hat den Lieferschein unterschrieben. Das passt alles zusammen.",
+      tarik:"Tarik? Der hat um 14:50 Uhr Gemüse geliefert, und Paul hat unterschrieben. Tarik war also an der Hintertür."
+    };
+    let msg;
+    if(names.length) msg = R[names[0]];
+    else if(has("wong")||has("chef")||has("koch")||has("ich")||has("du")) msg = "Ich?! 😅 Ich habe die Dumplings doch selbst gefaltet! Nein, nein – es war jemand aus meinem Team.";
+    else msg = "Hmm, den Namen kenne ich gar nicht. In meinem Team sind Leo, Greta, Paul, Mila und Tarik.";
+    const tip = wrong===1 ? "Schaut nochmal in eure Alibi-Tabelle. Bei wem passt NICHTS zusammen? 🤔"
+              : wrong===2 ? "Tipp: Wessen Aussage passt nicht zu dem, was Paul am Spülbecken gehört hat?"
+              : "Großer Tipp: Wem gehört die Schürze voller Teigreste, die Mila im Personalraum gefunden hat? 👀";
+    say([msg, tip]);
+  };
+  send.onclick=answer; inp.onkeydown=e=>{ if(e.key==="Enter") answer(); };
+}
+
+/* ===== Kühlraum-Tür ===== */
+function door(){
+  if(!S.solved){ app.innerHTML = lockCard("Die Tür ist noch zu","Zuerst müsst ihr Chefkoch Wong den Täter nennen.","Zum Chat mit Chefkoch Wong"); document.getElementById("lockBtn").onclick=()=>go("chat"); return; }
+  const dg=[0,0,0];
+  app.innerHTML = `<div class="card"><div class="kicker">Kühlraum</div><h2>Knackt das Zahlenschloss!</h2>
+    <p class="muted">Stellt den Code von Leos Zettel ein und tippt auf „Öffnen“.</p>
+    <div class="doorbox" id="db">
+      <div class="inside"><div class="fog"></div><div><div class="basket">🥟🥟🥟</div><h3 class="hide" id="found" style="margin-top:10px">Die Dumplings!</h3></div></div>
+      <div class="door"><svg viewBox="0 0 300 400" aria-hidden="true">
+        <rect x="4" y="4" width="292" height="392" rx="16" fill="#eef4f7" stroke="#7a6248" stroke-width="6"/>
+        <rect x="26" y="70" width="248" height="300" rx="10" fill="#fff" stroke="#9cc3d5" stroke-width="4"/>
+        <rect x="70" y="22" width="160" height="38" rx="8" fill="#7a6248"/>
+        <text x="150" y="48" text-anchor="middle" font-family="DynaPuff, sans-serif" font-size="20" fill="#fff">KÜHLRAUM</text>
+        <rect x="246" y="170" width="18" height="90" rx="9" fill="#7a6248"/>
+        <g stroke="#9cc3d5" stroke-width="4" stroke-linecap="round"><path d="M70 120v40M50 140h40M56 126l28 28M84 126l-28 28"/><path d="M200 300v30M185 315h30M190 305l20 20M210 305l-20 20"/></g>
+        <rect x="95" y="210" width="110" height="60" rx="12" fill="#5e4a35"/><circle cx="150" cy="240" r="18" fill="#e2b162"/><circle cx="150" cy="240" r="6" fill="#5e4a35"/>
+      </svg></div>
+    </div>
+    <div class="wheels">${[0,1,2].map(i=>`<div class="wheel"><button data-i="${i}" data-d="1">▲</button><div id="w${i}">0</div><button data-i="${i}" data-d="-1">▼</button></div>`).join("")}</div>
+    <button class="btn red" id="open">Öffnen</button><div class="msg" id="m" style="text-align:center"></div><div id="after"></div></div>`;
+  app.querySelectorAll(".wheel button").forEach(b=>b.onclick=()=>{ const i=+b.dataset.i; dg[i]=(dg[i]+(+b.dataset.d)+10)%10; document.getElementById("w"+i).textContent=dg[i]; });
+  const m=document.getElementById("m"), db=document.getElementById("db");
+  const opened = () => {
+    db.classList.add("open"); document.getElementById("found").classList.remove("hide");
+    document.querySelector(".wheels").classList.add("hide"); document.getElementById("open").classList.add("hide");
+    m.className="msg good"; m.textContent="Klick! Die Tür ist offen!";
+    setTimeout(()=>{ confetti(); document.getElementById("after").innerHTML=`<p style="text-align:center;font-weight:800">Da sind sie – alle 120 Dumplings!</p><button class="btn" id="b10">Botschaft Nr. 10 öffnen</button>`; document.getElementById("b10").onclick=()=>go(10); }, 1500);
+  };
+  if(S.door){ opened(); return; }
+  document.getElementById("open").onclick=()=>{
+    if(dg.join("")===DOOR_CODE){ S.door=true; save(); opened(); }
+    else { db.classList.remove("shake"); void db.offsetWidth; db.classList.add("shake"); m.className="msg bad"; m.textContent="Klack. Falscher Code – lest Leos Zettel nochmal ganz genau."; }
+  };
+}
+
+/* ===== Start ===== */
+function route(){
+  const s = new URLSearchParams(location.search).get("s");
+  document.getElementById("who").textContent = "🕵️ " + nm();
+  if(s==="chat") return chat();
+  if(s==="tuer") return door();
+  const n = parseInt(s,10);
+  if(ST[n]) return station(n);
+  home();
+}
+(async function(){
+  if(K){ try{ const r = await fetch("orders/"+K+".json",{cache:"no-store"}); if(r.ok) order = await r.json(); }catch(e){} }
+  route();
+})();
+</script>
+</body>
+</html>
