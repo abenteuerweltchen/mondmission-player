@@ -1,1 +1,3 @@
-OK img/v2/src_icons.png 4692375
+OK img/dumpling/src_p1.png 3450797
+OK img/dumpling/src_p2.png 392267
+OK img/dumpling/src_p5.png 1123760
