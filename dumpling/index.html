@@ -65,6 +65,19 @@ details summary::before{content:"▸ ";} details[open] summary::before{content:"
 .gate input:focus{outline:none;border-color:var(--brown)}
 .msg{margin-top:10px;font-weight:800;min-height:1.4em}
 .msg.bad{color:var(--red)} .msg.good{color:var(--ok)}
+.cups{display:grid;gap:10px;margin-top:12px}
+.cup{display:flex;align-items:center;gap:12px}
+.cup b{flex:none;width:46px;height:46px;border-radius:50% 50% 14px 14px;background:var(--ice);border:3px solid var(--ice2);display:grid;place-items:center;font-family:var(--display);font-size:20px;color:var(--brown2)}
+.cup select{flex:1;padding:12px;border-radius:14px;border:3px solid var(--line);background:#fff;font:700 17px var(--body);color:var(--text)}
+.cup select.bad{border-color:var(--red)} .cup select.ok{border-color:var(--ok)}
+.slip{position:relative;margin-top:14px;padding:18px 18px 22px;background:#fff;border:2px dashed var(--brown);border-radius:12px;font-weight:700;overflow:hidden}
+.slip h3{margin:0 0 8px;font-family:var(--display)} .slip ul{list-style:none;padding:0;margin:0} .slip li{margin:4px 0}
+.slip .big{position:absolute;left:50%;top:55%;transform:translate(-50%,-50%) rotate(-12deg) scale(3);opacity:0;border:5px solid var(--red);color:var(--red);
+  font-family:var(--display);font-size:34px;font-weight:700;padding:6px 16px;border-radius:10px;background:rgba(255,255,255,.85);letter-spacing:2px;transition:none}
+.slip .big.hit{animation:stampin .45s cubic-bezier(.3,1.6,.5,1) forwards}
+@keyframes stampin{to{opacity:1;transform:translate(-50%,-50%) rotate(-12deg) scale(1)}}
+.slip.thud{animation:thud .25s .35s}
+@keyframes thud{50%{transform:translateY(4px)}}
 .shake{animation:shake .45s}
 @keyframes shake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
 /* Fall-Akte */
@@ -138,6 +151,8 @@ footer a{color:var(--muted)}
 const AUDIO = false;              // Ton kommt später (ElevenLabs)
 const PASS_PAUL = ["DUMPLING","DUMPLINGS"];
 const DOOR_CODE = "736";
+const LIEFERUNG = ["Tomate","Apfelsaft","Paprika","Karotte","Orangensaft","Birne","Gurke","Zitrone","Banane"];
+const BECHER = {A:"Gurke", B:"Banane", C:"Apfelsaft", D:"Karotte"};
 
 /* ===== Figuren ===== */
 const P = {
@@ -153,13 +168,13 @@ const P = {
 const ST = {
  1:{t:"Ein Notruf aus der Küche", l:[["wong","Hallo {N}!\nIch habe gehört, du und dein Team seid die besten Detektive der ganzen Stadt – genau euch brauche ich jetzt! Ich bin Wong, Chefkoch der Goldenen Teigtasche. Heute um 19 Uhr kommt Paula Pfeffer, die strengste Restaurantkritikerin des Landes. Für sie habe ich 120 Dumplings von Hand gefaltet. Um 14:30 Uhr lagen sie noch im Kühlregal – um 15:00 Uhr war das Blech leer.\n\nKeine Einbruchspuren. Es war jemand aus meinem Team – und einer von fünf Leuten sagt nicht die Wahrheit. Stellt euer Detektiv-Team zusammen und bringt mir meine Dumplings zurück!"]]},
  2:{t:"Der Tatort", l:[["wong","Gut gemacht, {N}!\nDein Team steht. Jetzt zum Tatort: dem Kühlregal. Nach einem Diebstahl im letzten Jahr habe ich es mit Lichtschranken gesichert – unsichtbare Strahlen, kreuz und quer. Wer einen berührt, löst den Alarm aus.\n\nHinter den Strahlen wartet das erste Beweisstück. Schafft es dein Detektiv-Team hindurch, ohne Alarm auszulösen?"]]},
- 3:{t:"Zeuge Nr. 1: Kellner Leo", w:"leo", l:[["wong","Achtung, {N}!\nDer Täter ist einer aus meinem Team. Deshalb schickt mir jeder Zeuge seine Aussage verschlüsselt – damit niemand sonst mitlesen kann.\n\nKellner Leo benutzt die Caesar-Verschlüsselung: Jeder Buchstabe ist im Alphabet um ein paar Stellen verschoben. Um wie viele? Das müsst ihr selbst herausfinden. Kleiner Tipp: Leos Aussage beginnt mit dem Wort „ICH“."],["leo","Ich helfe doch gern! Meine Aussage gibt's aber nur verschlüsselt – Befehl vom Chef."]]},
- 4:{t:"Zeuge Nr. 2: Spüler Paul", w:"paul", l:[["wong","Hör gut zu, {N}!\nPaul ist so schüchtern, dass er kaum ein Wort herausbringt. Aber er hat etwas gehört. Erzählen will er es nur echten Detektiven – deshalb hat er ein Passwort in Morsezeichen versteckt.\n\nKnackt das Passwort mit der Morse-Staffel und tippt es hier ein. Dann spricht Paul mit euch!"],["paul","Ähm … nur mit Passwort. Tut mir leid."]]},
- 5:{t:"Zeugin Nr. 3: Greta", w:"greta", l:[["wong","Vorsicht, {N}!\nGreta schreibt alle Rezepte in Spiegelschrift – damit niemand ihre Geheimrezepte abschreibt. Auch ihre Aussage hat sie so verfasst.\n\nAber Greta gibt sie nur heraus, wenn ihr beweist, dass ihr ruhige Hände habt."],["greta","In meiner Küche fällt nichts herunter – kein Teller, kein Löffel, keine einzige Teigtasche. Zeigt mir, dass ihr das auch könnt!"]]},
- 6:{t:"Zeugin Nr. 4: Mila", w:"mila", l:[["wong","Spannend, {N}!\nMila bestätigt Greta: Die beiden waren zusammen im Vorratskeller. Aber auf dem Weg dorthin hat Mila im Personalraum etwas Merkwürdiges entdeckt.\n\nSie hat das Beweisstück in einem Wortgitter versteckt. Findet alle Küchenwörter – die Buchstaben, die übrig bleiben, verraten, was sie gefunden hat."],["mila","Ich verrate es euch in Rätselform. Detektive lieben doch Rätsel, oder?"]]},
- 7:{t:"Zeuge Nr. 5: Tarik", w:"tarik", l:[["wong","Fast geschafft, {N}!\nTarik hat um 14:50 Uhr Gemüse an die Hintertür geliefert. Paul hat den Lieferschein unterschrieben – die beiden waren also zur Tatzeit zusammen an der Hintertür."],["tarik","Auf dem Rückweg habe ich Mehlspuren auf dem Küchenboden gesehen. Wohin sie führen, habe ich auf meinem Lieferschein versteckt – mit den Nummern meiner Zutaten. Lesen kann ihn nur, wer meine Lieferung am Geschmack erkennt!"]]},
+ 3:{t:"Zeuge Nr. 1: Kellner Leo", w:"leo", l:[["wong","Achtung, {N}!\nIch schalte euch zu meinem Kellner Leo."],["leo","Hallo, Detektive! Ich helfe doch gern! Aber der Chef will, dass jede Aussage verschlüsselt ist. Also habe ich jeden Buchstaben im Alphabet ein paar Stellen verschoben. Wie viele? Findet es selbst heraus. Kleiner Tipp: Mein Zettel fängt mit „ICH“ an."],["wong","Entschlüsselt Leos Zettel – wo war er angeblich?"]]},
+ 4:{t:"Zeuge Nr. 2: Spüler Paul", w:"paul", l:[["wong","Hör gut zu, {N}!\nJetzt kommt Paul, mein Spüler. Er ist sehr schüchtern."],["paul","Ähm … hallo. Ich … ich habe was gehört. Aber ich sag's nur echten Detektiven. Deshalb habe ich ein Passwort in Morsezeichen versteckt. Wenn ihr es knackt, tippt es hier ein. Dann … dann erzähl ich's euch."]]},
+ 5:{t:"Zeugin Nr. 3: Greta", w:"greta", l:[["wong","Vorsicht, {N}!\nGreta, meine Sous-Chefin, ist sehr streng."],["greta","Meine Aussage steht auf meiner Rezeptkarte – in Spiegelschrift, wie alle meine Rezepte. Aber die bekommt nicht jeder! In meiner Küche fällt nichts herunter: kein Teller, kein Löffel, keine einzige Teigtasche. Zeigt mir, dass ihr ruhige Hände habt!"]]},
+ 6:{t:"Zeugin Nr. 4: Mila", w:"mila", l:[["wong","Spannend, {N}!\nMila, meine Konditorin, hat etwas gefunden."],["mila","Hallo ihr! Ja, ich war mit Greta im Vorratskeller. Aber auf dem Weg dorthin habe ich im Personalraum etwas Komisches entdeckt! Was es ist, habe ich in einem Wortgitter versteckt. Findet alle Küchenwörter – die übrigen Buchstaben verraten es euch."]]},
+ 7:{t:"Zeuge Nr. 5: Tarik", w:"tarik", l:[["wong","Fast geschafft, {N}!\nHier ist Tarik, unser Lieferfahrer."],["tarik","Hi! Ich war um 14:50 Uhr an der Hintertür und habe Gemüse geliefert. Paul hat mir den Lieferschein unterschrieben. Auf dem Rückweg habe ich Mehlspuren auf dem Boden gesehen! Wohin sie führen, verrate ich euch – aber nur, wenn ihr meine Lieferung am Geschmack erkennt."]]},
  8:{t:"Die Akte schließen", l:[["wong","Alle Aussagen liegen vor, {N}!\nJetzt seid ihr dran. Gute Detektive vertrauen nicht dem Bauchgefühl, sondern den Beweisen.\n\nTragt alles in die Alibi-Tabelle ein: Wer war wo? Und wer kann das bestätigen? Nur bei einer Person passt nichts zusammen. Einigt euch auf einen Hauptverdächtigen – und dann teilt ihn mir mit: Tippt hier unten auf „Weiter“."]]},
- 9:{t:"Der Kühlraum", l:[["wong","Leo?! Das hätte ich nie gedacht, {N}!\nDie Mehlspuren führen direkt zum Kühlraum. Aber Leo hat das Zahlenschloss neu eingestellt – und er sagt kein Wort.\n\nZum Glück hat er in der Eile einen Zettel mit Hinweisen auf den Code liegen lassen. Knackt das Schloss – dann wissen wir, ob die Dumplings wirklich dort sind!"],["leo","Ich sag gar nichts. Den Code findet ihr nie!"]]},
+ 9:{t:"Der Kühlraum", l:[["wong","Leo?! Das hätte ich nie gedacht, {N}!\nDie Mehlspuren führen direkt zum Kühlraum. Aber Leo hat das Zahlenschloss neu eingestellt."],["leo","Ich sag gar nichts! Den Code findet ihr nie. … Moment – wo ist eigentlich mein Zettel?"],["wong","Ha! Leo hat seinen Zettel liegen lassen. Knackt damit das Schloss!"]]},
  10:{t:"Fall gelöst!", l:[["leo","Ich geb's zu. Ich wollte die Dumplings heute Abend „zufällig“ wiederfinden – als Held. Dann hätte Chefkoch Wong mich bestimmt zum Oberkellner gemacht. Das war eine blöde Idee. Es tut mir leid."],["wong","Danke, {N}!\nDu und dein Detektiv-Team habt den Fall in Rekordzeit gelöst. Die Dumplings sind gerettet, die Kritikerin kann kommen. Als Dankeschön habe ich euch etwas in den Kühlraum gelegt …"]]}
 };
 const PAUL_AUSSAGE = "Ähm … hallo. Ich … ich sag's ganz schnell.\nUm zwei Uhr stand ich am Spülbecken. Da hat Leo den letzten Stapel Servietten auf den Tisch gelegt und gerufen: „Fertig! Alle Servietten gefaltet!“\nUm zwei Uhr schon! Danach war Leo weg. Wohin, weiß ich nicht.\nÄhm … das war's. Viel Glück, Detektive!";
@@ -169,7 +184,7 @@ const q = new URLSearchParams(location.search);
 const K = (q.get("k")||"").replace(/[^a-z0-9_-]/gi,"").slice(0,40);
 let order = null;
 const SKEY = "dumpling_" + (K||"demo");
-let S = {v:[], paul:false, solved:false, door:false};
+let S = {v:[], paul:false, tarik:false, solved:false, door:false};
 try{ const raw = localStorage.getItem(SKEY); if(raw) S = Object.assign(S, JSON.parse(raw)); }catch(e){}
 function save(){ try{ localStorage.setItem(SKEY, JSON.stringify(S)); }catch(e){} }
 function nm(){ return order && order.name ? order.name : "Detektive"; }
@@ -232,6 +247,7 @@ function station(s){
     <details open><summary>Mitlesen</summary>${lines(d.l)}</details></div><div id="extra"></div>`;
   const ex = document.getElementById("extra");
   if(s===4) paulGate(ex);
+  if(s===7) tarikGate(ex);
   if(s===8){ ex.innerHTML = `<div class="card"><h3>Habt ihr euch geeinigt?</h3><p class="muted">Erst die Alibi-Tabelle ausfüllen und einen Hauptverdächtigen wählen.</p><button class="btn red" id="weiter">Weiter</button></div>`; document.getElementById("weiter").onclick=()=>go("chat"); }
   if(s===9){ ex.innerHTML = `<div class="card"><p>Code geknackt? Dann scannt den QR-Code auf Leos Zettel – oder tippt hier:</p><button class="btn" id="zt">Zur Kühlraum-Tür</button></div>`; document.getElementById("zt").onclick=()=>go("tuer"); }
   if(s===10){ ex.innerHTML = `<div class="card" style="text-align:center"><span class="stamp">Fall gelöst</span><h2 style="margin-top:12px">Glückwunsch, ${esc(nm())}!</h2><p>Jetzt schnell zum Kühlraum – dort wartet euer Dankeschön!</p></div>`; confetti(); }
@@ -254,6 +270,37 @@ function paulGate(ex){
     m.textContent = tries<3 ? "Paul schüttelt den Kopf. Das ist nicht sein Passwort." : "Tipp: Das Wort hat 8 Buchstaben. Prüft jeden Morse-Buchstaben noch einmal mit der Tabelle.";
   };
   document.getElementById("ok").onclick=check; pw.onkeydown=e=>{ if(e.key==="Enter") check(); };
+}
+
+
+/* ===== Tariks Geschmackstest ===== */
+function tarikGate(ex){
+  const show = (anim) => {
+    ex.innerHTML = `<div class="card" id="tz"><div class="kicker">Tariks Lieferschein</div><h2>Richtig geschmeckt!</h2>
+      <div class="slip" id="slip"><h3>Lieferung Nr. 0815</h3><ul>${Object.entries(BECHER).map(([k,v])=>`<li>✔ Becher ${k}: ${v}</li>`).join("")}</ul>
+      <div class="big ${anim?"":"hit"}" id="big">KÜHLRAUM</div></div>
+      ${lines([["tarik","Jaaa, genau das war meine Lieferung! Und jetzt passt auf: Die Mehlspuren gingen quer durch die Küche – direkt zum KÜHLRAUM! Schreibt das schnell auf meinen Lieferschein."]])}</div>`;
+    if(anim){ setTimeout(()=>{ document.getElementById("big").classList.add("hit"); document.getElementById("slip").classList.add("thud"); confetti(); }, 500); }
+  };
+  if(S.tarik){ show(false); return; }
+  ex.innerHTML = `<div class="card gate" id="tz"><div class="kicker">Geschmackstest</div><h3>Was war in den Bechern?</h3>
+    <p class="muted">Probiert blind und wählt dann für jeden Becher eine Zutat aus Tariks Lieferung.</p>
+    <div class="cups">${Object.keys(BECHER).map(k=>`<label class="cup"><b>${k}</b><select data-k="${k}"><option value="">– wählen –</option>${LIEFERUNG.map(z=>`<option>${z}</option>`).join("")}</select></label>`).join("")}</div>
+    <button class="btn" id="ok">Tarik fragen</button><div id="tm"></div></div>`;
+  const sel=[...ex.querySelectorAll("select")], tm=document.getElementById("tm"); let tries=0;
+  sel.forEach(x=>x.onchange=()=>x.classList.remove("bad","ok"));
+  document.getElementById("ok").onclick=()=>{
+    if(sel.some(x=>!x.value)){ tm.innerHTML=lines([["tarik","Halt, halt! Erst alle vier Becher probieren und eine Zutat auswählen."]]); return; }
+    const bad=sel.filter(x=>x.value!==BECHER[x.dataset.k]);
+    sel.forEach(x=>{ x.classList.toggle("bad",bad.includes(x)); x.classList.toggle("ok",!bad.includes(x)); });
+    if(!bad.length){ S.tarik=true; save(); show(true); ex.scrollIntoView({behavior:"smooth"}); return; }
+    tries++;
+    const ks=bad.map(x=>x.dataset.k), list=ks.length>1? ks.slice(0,-1).join(", ")+" und "+ks[ks.length-1] : ks[0];
+    let t = ks.length===4 ? "Hmm, nee … das klingt gar nicht nach meiner Lieferung. Probiert nochmal!"
+          : `${ks.length>1?"Becher":"Becher"} ${list}? Nee, das schmeckt nach was anderem. Probiert ${ks.length>1?"die":"den"} nochmal!`;
+    if(tries>=3) t += " Kleiner Tipp: Nur ein Becher ist zum Trinken.";
+    tm.innerHTML = lines([["tarik",t]]);
+  };
 }
 
 /* ===== Chat mit Chefkoch Wong ===== */
