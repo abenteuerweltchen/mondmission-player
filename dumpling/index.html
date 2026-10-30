@@ -49,6 +49,11 @@ h1{font-size:clamp(24px,7vw,32px)} h2{font-size:24px} h3{font-size:19px}
 .play{width:60px;height:60px;border-radius:50%;background:var(--brown);display:grid;place-items:center;flex:none;box-shadow:0 4px 0 var(--brown2)}
 .play svg{width:26px;height:26px;fill:#fff}
 .play[disabled]{background:#bfb2a0;box-shadow:none;cursor:default}
+.play.on{background:var(--red);box-shadow:0 4px 0 #8e2a1f}
+.player{flex-wrap:wrap}
+.pbar{flex-basis:100%;height:6px;border-radius:3px;background:#dccbb0;overflow:hidden}
+.pbar i{display:block;height:100%;width:0;background:var(--brown);transition:width .25s linear}
+.bubble.active{border-color:var(--brown);box-shadow:0 0 0 3px rgba(122,98,72,.18)}
 .ptext{min-width:0;font-weight:700;font-size:15px;line-height:1.3}
 .ptext b{display:block;font-family:var(--display);font-weight:600;font-size:17px;color:var(--brown2)}
 /* Transcript */
@@ -148,7 +153,11 @@ footer a{color:var(--muted)}
 
 <script>
 /* ===== Einstellungen ===== */
-const AUDIO = false;              // Ton kommt später (ElevenLabs)
+const AUDIO = true;
+const AUD_BASE = "../audio/dumpling/";
+/* Audio-Dateien je Botschaft – Reihenfolge = Sprechblasen */
+const PL = {1:["s1_1"],2:["s2_1"],3:["s3_1","s3_2","s3_3"],4:["s4_1","s4_2"],5:["s5_1","s5_2"],6:["s6_1","s6_2"],7:["s7_1","s7_2"],
+  8:["s8_1"],9:["s9_1","s9_2","s9_3"],10:["s10_1","s10_2"],paul:["paul_aussage"],tarik:["tarik_ok"]};
 const PASS_PAUL = ["DUMPLING","DUMPLINGS"];
 const DOOR_CODE = "736";
 const LIEFERUNG = ["Tomate","Apfelsaft","Paprika","Karotte","Orangensaft","Birne","Gurke","Zitrone","Banane"];
@@ -198,14 +207,39 @@ window.addEventListener("popstate", route);
 
 /* ===== Bausteine ===== */
 const playIcon = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
-function player(whos, label){
+const playIcon2 = '<svg viewBox="0 0 24 24"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>';
+function player(whos, label, key){
   const av = whos.map((w,i)=>`<img class="avatar" src="${P[w].img}" alt="" style="${i?"margin-left:-22px":""}">`).join("");
-  return `<div class="player"><div style="display:flex;flex:none">${av}</div>
-    <div class="ptext"><b>${esc(label||whos.map(w=>P[w].n.split(" ").pop()).join(" & "))}</b>${AUDIO ? "Zum Abspielen tippen" : "Hörspiel folgt bald"}</div>
-    <button class="play" ${AUDIO?"":"disabled"} aria-label="Abspielen" style="margin-left:auto">${playIcon}</button></div>`;
+  const has = AUDIO && key!==undefined && PL[key];
+  return `<div class="player" ${has?`data-k="${key}"`:""}><div style="display:flex;flex:none">${av}</div>
+    <div class="ptext"><b>${esc(label||whos.map(w=>P[w].n.split(" ").pop()).join(" & "))}</b><span class="pst">${has ? "Zum Anhören tippen" : "Zum Mitlesen"}</span></div>
+    <button class="play" ${has?"":"disabled"} aria-label="Abspielen" style="margin-left:auto">${playIcon}</button>${has?'<div class="pbar"><i></i></div>':""}</div>`;
 }
-function lines(l){
-  return `<div class="lines">` + l.map(([w,t])=>`<div class="line"><img src="${P[w].img}" alt=""><div class="bubble"><span class="who">${P[w].n}</span>${esc(fill(t))}</div></div>`).join("") + `</div>`;
+/* ===== Audio ===== */
+const AU = new Audio(); AU.preload = "auto";
+let cur = null; // {key, i, box}
+function stopAudio(){ try{ AU.pause(); }catch(e){} if(cur){ setBtn(cur.box,false); markLine(cur,-1); } cur=null; }
+function setBtn(box,on,txt){ const b=box.querySelector(".play"); if(!b) return; b.classList.toggle("on",on); b.innerHTML=on?playIcon2:playIcon;
+  const st=box.querySelector(".pst"); if(st) st.textContent = txt || (on?"Läuft …":"Zum Anhören tippen"); }
+function markLine(c,i){ const scope=c.box.closest(".card"); if(!scope) return;
+  scope.querySelectorAll('.lines[data-k="'+c.key+'"] .bubble').forEach((el,j)=>el.classList.toggle("active",j===i)); }
+function playIdx(c,i){
+  const list=PL[c.key]; if(i>=list.length){ setBtn(c.box,false,"Nochmal anhören"); markLine(c,-1); c.box.querySelector(".pbar i").style.width="100%"; cur=null; return; }
+  c.i=i; markLine(c,i); AU.src = AUD_BASE + list[i] + ".mp3";
+  const p = AU.play(); if(p && p.catch) p.catch(()=>{ setBtn(c.box,false,"Tippen zum Abspielen"); });
+}
+AU.addEventListener("ended",()=>{ if(cur) playIdx(cur,cur.i+1); });
+AU.addEventListener("timeupdate",()=>{ if(!cur || !AU.duration) return; const n=PL[cur.key].length;
+  cur.box.querySelector(".pbar i").style.width = (100*(cur.i + AU.currentTime/AU.duration)/n)+"%"; });
+AU.addEventListener("error",()=>{ if(!cur) return; const c=cur; setBtn(c.box,false,"Ton nicht geladen – Internet prüfen"); cur=null; });
+function startPlayer(box, from){
+  const key=box.dataset.k;
+  if(cur && cur.box===box){ if(!AU.paused){ AU.pause(); setBtn(box,false,"Pausiert"); } else { const p=AU.play(); if(p&&p.catch)p.catch(()=>{}); setBtn(box,true); } return; }
+  stopAudio(); cur={key, i:0, box}; setBtn(box,true); playIdx(cur, from||0);
+}
+function bindPlayers(root){ (root||document).querySelectorAll(".player[data-k]").forEach(box=>{ box.querySelector(".play").onclick=()=>startPlayer(box); }); }
+function lines(l, key){
+  return `<div class="lines" ${key!==undefined?`data-k="${key}"`:""}>` + l.map(([w,t])=>`<div class="line"><img src="${P[w].img}" alt=""><div class="bubble"><span class="who">${P[w].n}</span>${esc(fill(t))}</div></div>`).join("") + `</div>`;
 }
 function lockCard(title, text, btn, target){
   return `<div class="card"><div class="lock">🔒</div><h2 style="text-align:center;margin-top:8px">${title}</h2>
@@ -243,8 +277,9 @@ function station(s){
   if(s===10 && !S.door){ app.innerHTML = lockCard("Botschaft Nr. 10 ist gesperrt", S.solved?"Erst muss die Kühlraum-Tür auf!":"Zuerst müsst ihr Chefkoch Wong den Täter nennen.", S.solved?"Zur Kühlraum-Tür":"Zum Chat mit Chefkoch Wong"); document.getElementById("lockBtn").onclick=()=>go(S.solved?"tuer":"chat"); return; }
   if(!S.v.includes(s)){ S.v.push(s); save(); }
   app.innerHTML = `<div class="card"><div class="kicker">Botschaft Nr. ${s}</div><h2>${d.t}</h2>
-    ${player([...new Set(d.l.map(x=>x[0]))])}
-    <details open><summary>Mitlesen</summary>${lines(d.l)}</details></div><div id="extra"></div>`;
+    ${player([...new Set(d.l.map(x=>x[0]))], undefined, s)}
+    <details open><summary>Mitlesen</summary>${lines(d.l, s)}</details></div><div id="extra"></div>`;
+  bindPlayers(app);
   const ex = document.getElementById("extra");
   if(s===4) paulGate(ex);
   if(s===7) tarikGate(ex);
@@ -254,7 +289,7 @@ function station(s){
 }
 
 function paulGate(ex){
-  const show = () => { ex.innerHTML = `<div class="card"><div class="kicker">Pauls Zeugenaussage</div><h2>Paul spricht!</h2>${player(["paul"],"Spüler Paul")}${lines([["paul",PAUL_AUSSAGE]])}</div>`; };
+  const show = () => { ex.innerHTML = `<div class="card"><div class="kicker">Pauls Zeugenaussage</div><h2>Paul spricht!</h2>${player(["paul"],"Spüler Paul","paul")}${lines([["paul",PAUL_AUSSAGE]],"paul")}</div>`; bindPlayers(ex); };
   if(S.paul){ show(); return; }
   ex.innerHTML = `<div class="card gate"><div class="kicker">Gesperrt</div><h3>Pauls Passwort</h3>
     <p class="muted">Das Wort aus eurer Morse-Staffel:</p>
@@ -264,7 +299,7 @@ function paulGate(ex){
   const check = () => {
     const v = pw.value.toUpperCase().replace(/[^A-ZÄÖÜ]/g,"");
     if(!v) return;
-    if(PASS_PAUL.includes(v)){ S.paul=true; save(); show(); ex.scrollIntoView({behavior:"smooth"}); return; }
+    if(PASS_PAUL.includes(v)){ S.paul=true; save(); show(); const pb=ex.querySelector(".player[data-k]"); if(pb) startPlayer(pb); ex.scrollIntoView({behavior:"smooth"}); return; }
     tries++; pw.classList.remove("shake"); void pw.offsetWidth; pw.classList.add("shake");
     m.className="msg bad";
     m.textContent = tries<3 ? "Paul schüttelt den Kopf. Das ist nicht sein Passwort." : "Tipp: Das Wort hat 8 Buchstaben. Prüft jeden Morse-Buchstaben noch einmal mit der Tabelle.";
@@ -279,7 +314,9 @@ function tarikGate(ex){
     ex.innerHTML = `<div class="card" id="tz"><div class="kicker">Tariks Lieferschein</div><h2>Richtig geschmeckt!</h2>
       <div class="slip" id="slip"><h3>Lieferung Nr. 0815</h3><ul>${Object.entries(BECHER).map(([k,v])=>`<li>✔ Becher ${k}: ${v}</li>`).join("")}</ul>
       <div class="big ${anim?"":"hit"}" id="big">KÜHLRAUM</div></div>
-      ${lines([["tarik","Jaaa, genau das war meine Lieferung! Und jetzt passt auf: Die Mehlspuren gingen quer durch die Küche – direkt zum KÜHLRAUM! Schreibt das schnell auf meinen Lieferschein."]])}</div>`;
+      ${player(["tarik"],"Lieferfahrer Tarik","tarik")}
+      ${lines([["tarik","Jaaa, genau das war meine Lieferung! Und jetzt passt auf: Die Mehlspuren gingen quer durch die Küche – direkt zum KÜHLRAUM! Schreibt das schnell auf meinen Lieferschein."]],"tarik")}</div>`;
+    bindPlayers(ex);
     if(anim){ setTimeout(()=>{ document.getElementById("big").classList.add("hit"); document.getElementById("slip").classList.add("thud"); confetti(); }, 500); }
   };
   if(S.tarik){ show(false); return; }
@@ -293,13 +330,14 @@ function tarikGate(ex){
     if(sel.some(x=>!x.value)){ tm.innerHTML=lines([["tarik","Halt, halt! Erst alle vier Becher probieren und eine Zutat auswählen."]]); return; }
     const bad=sel.filter(x=>x.value!==BECHER[x.dataset.k]);
     sel.forEach(x=>{ x.classList.toggle("bad",bad.includes(x)); x.classList.toggle("ok",!bad.includes(x)); });
-    if(!bad.length){ S.tarik=true; save(); show(true); ex.scrollIntoView({behavior:"smooth"}); return; }
+    if(!bad.length){ S.tarik=true; save(); show(true); const tb=ex.querySelector(".player[data-k]"); if(tb) startPlayer(tb); ex.scrollIntoView({behavior:"smooth"}); return; }
     tries++;
     const ks=bad.map(x=>x.dataset.k), list=ks.length>1? ks.slice(0,-1).join(", ")+" und "+ks[ks.length-1] : ks[0];
     let t = ks.length===4 ? "Hmm, nee … das klingt gar nicht nach meiner Lieferung. Probiert nochmal!"
           : `${ks.length>1?"Becher":"Becher"} ${list}? Nee, das schmeckt nach was anderem. Probiert ${ks.length>1?"die":"den"} nochmal!`;
     if(tries>=3) t += " Kleiner Tipp: Nur ein Becher ist zum Trinken.";
     tm.innerHTML = lines([["tarik",t]]);
+    stopAudio(); AU.src = AUD_BASE + "tarik_falsch.mp3"; const pf=AU.play(); if(pf&&pf.catch) pf.catch(()=>{});
   };
 }
 
@@ -401,6 +439,7 @@ function door(){
 
 /* ===== Start ===== */
 function route(){
+  stopAudio();
   const s = new URLSearchParams(location.search).get("s");
   document.getElementById("who").textContent = "🕵️ " + nm();
   if(s==="chat") return chat();
