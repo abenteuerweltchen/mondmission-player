@@ -156,8 +156,11 @@ footer a{color:var(--muted)}
 const AUDIO = true;
 const AUD_BASE = "../audio/dumpling/";
 /* Audio-Dateien je Botschaft – Reihenfolge = Sprechblasen */
-const PL = {1:["s1_1"],2:["s2_1"],3:["s3_1","s3_2","s3_3"],4:["s4_1","s4_2"],5:["s5_1","s5_2"],6:["s6_1","s6_2"],7:["s7_1","s7_2"],
-  8:["s8_1"],9:["s9_1","s9_2","s9_3"],10:["s10_1","s10_2"],paul:["paul_aussage"],tarik:["tarik_ok"]};
+/* "n" = persönlicher Namensclip (audio/dumpling/p/<k>/nXX.mp3), sonst allgemeine Datei */
+const PL = {1:["n","w01"],2:["n","w02"],3:["n","w03","leo03","w03b"],4:["n","w04","paul04"],5:["n","w05","greta05"],6:["n","w06","mila06"],
+  7:["n","w07","tarik07"],8:["n","w08"],9:["n","w09","leo09","w09b"],10:["leo10","n","w10"],paul:["paul_aussage"],tarik:["tarik_ok"]};
+/* Welche Sprechblase (Mitlesen) gehört zu welchem Clip */
+const PL_LINE = {1:[0,0],2:[0,0],8:[0,0],3:[0,0,1,2],4:[0,0,1],5:[0,0,1],6:[0,0,1],7:[0,0,1],9:[0,0,1,2],10:[0,1,1]};
 const PASS_PAUL = ["DUMPLING","DUMPLINGS"];
 const DOOR_CODE = "736";
 const LIEFERUNG = ["Tomate","Apfelsaft","Paprika","Karotte","Orangensaft","Birne","Gurke","Zitrone","Banane"];
@@ -223,15 +226,23 @@ function setBtn(box,on,txt){ const b=box.querySelector(".play"); if(!b) return; 
   const st=box.querySelector(".pst"); if(st) st.textContent = txt || (on?"Läuft …":"Zum Anhören tippen"); }
 function markLine(c,i){ const scope=c.box.closest(".card"); if(!scope) return;
   scope.querySelectorAll('.lines[data-k="'+c.key+'"] .bubble').forEach((el,j)=>el.classList.toggle("active",j===i)); }
+function clipUrl(key,i){
+  const id=PL[key][i];
+  if(id!=="n") return AUD_BASE + id + ".mp3";
+  if(!K || !(order && order.name)) return null;               // ohne Bestellung: Namensclip überspringen
+  return AUD_BASE + "p/" + K + "/n" + String(key).padStart(2,"0") + ".mp3";
+}
 function playIdx(c,i){
-  const list=PL[c.key]; if(i>=list.length){ setBtn(c.box,false,"Nochmal anhören"); markLine(c,-1); c.box.querySelector(".pbar i").style.width="100%"; cur=null; return; }
-  c.i=i; markLine(c,i); AU.src = AUD_BASE + list[i] + ".mp3";
+  const list=PL[c.key];
+  if(i>=list.length){ setBtn(c.box,false,"Nochmal anhören"); markLine(c,-1); c.box.querySelector(".pbar i").style.width="100%"; cur=null; return; }
+  const url=clipUrl(c.key,i); if(!url) return playIdx(c,i+1);
+  c.i=i; markLine(c, PL_LINE[c.key] ? PL_LINE[c.key][i] : i); AU.src = url;
   const p = AU.play(); if(p && p.catch) p.catch(()=>{ setBtn(c.box,false,"Tippen zum Abspielen"); });
 }
-AU.addEventListener("ended",()=>{ if(cur) playIdx(cur,cur.i+1); });
+AU.addEventListener("ended",()=>{ if(cur){ const c=cur; setTimeout(()=>{ if(cur===c) playIdx(c,c.i+1); },250); } });
 AU.addEventListener("timeupdate",()=>{ if(!cur || !AU.duration) return; const n=PL[cur.key].length;
   cur.box.querySelector(".pbar i").style.width = (100*(cur.i + AU.currentTime/AU.duration)/n)+"%"; });
-AU.addEventListener("error",()=>{ if(!cur) return; const c=cur; setBtn(c.box,false,"Ton nicht geladen – Internet prüfen"); cur=null; });
+AU.addEventListener("error",()=>{ if(!cur) return; const c=cur; if(PL[c.key][c.i]==="n"){ playIdx(c,c.i+1); return; } setBtn(c.box,false,"Ton nicht geladen – Internet prüfen"); cur=null; });
 function startPlayer(box, from){
   const key=box.dataset.k;
   if(cur && cur.box===box){ if(!AU.paused){ AU.pause(); setBtn(box,false,"Pausiert"); } else { const p=AU.play(); if(p&&p.catch)p.catch(()=>{}); setBtn(box,true); } return; }
