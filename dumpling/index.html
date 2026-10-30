@@ -41,6 +41,9 @@ h1{font-size:clamp(24px,7vw,32px)} h2{font-size:24px} h3{font-size:19px}
   background:var(--brown);color:#fff;font-weight:800;font-size:18px;box-shadow:0 5px 0 var(--brown2);transition:transform .08s}
 .btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--brown2)}
 .btn.red{background:var(--red);box-shadow:0 5px 0 #8e2a1f}
+.endnext{display:none}.endnext.show{display:block;animation:pop .35s ease}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+#nextAlways{margin:4px 0 18px}
 .btn.ghost{background:transparent;color:var(--brown);border:2px solid var(--brown);box-shadow:none}
 .muted{color:var(--muted);font-size:15px}
 /* Player */
@@ -234,7 +237,7 @@ function clipUrl(key,i){
 }
 function playIdx(c,i){
   const list=PL[c.key];
-  if(i>=list.length){ setBtn(c.box,false,"Nochmal anhören"); markLine(c,-1); c.box.querySelector(".pbar i").style.width="100%"; cur=null; return; }
+  if(i>=list.length){ setBtn(c.box,false,"Nochmal anhören"); markLine(c,-1); c.box.querySelector(".pbar i").style.width="100%"; cur=null; endNext(c.key); return; }
   const url=clipUrl(c.key,i); if(!url) return playIdx(c,i+1);
   c.i=i; markLine(c, PL_LINE[c.key] ? PL_LINE[c.key][i] : i); AU.src = url;
   const p = AU.play(); if(p && p.catch) p.catch(()=>{ setBtn(c.box,false,"Tippen zum Abspielen"); });
@@ -282,6 +285,19 @@ function home(){
   app.querySelectorAll(".item").forEach(a=>a.onclick=e=>{e.preventDefault();go(+a.dataset.s);});
 }
 
+function nextOf(s){
+  if(s<8) return [s+1, "Weiter zu Botschaft Nr. "+(s+1)];
+  if(s===8) return ["chat", "Weiter zum Chat mit Chefkoch Wong"];
+  if(s===9) return ["tuer", "Weiter zur Kühlraum-Tür"];
+  return null;
+}
+function endNext(key){
+  const s=Number(key); if(!s) return; const n=nextOf(s), box=document.getElementById("endNext"); if(!n||!box) return;
+  const hint = s===8 ? "Habt ihr euch auf einen Täter geeinigt? Dann weiter:" : s===9 ? "Code geknackt? Dann weiter:" : "Super! Löst jetzt die Aufgabe – dann geht es weiter:";
+  box.innerHTML = `<p class="muted" style="margin:14px 0 0">${hint}</p><button class="btn red" id="endBtn">${n[1]} →</button>`;
+  box.classList.add("show"); document.getElementById("endBtn").onclick=()=>{ stopAudio(); go(n[0]); };
+  box.scrollIntoView({behavior:"smooth",block:"center"});
+}
 function station(s){
   const d = ST[s];
   if(s===9 && !S.solved){ app.innerHTML = lockCard("Botschaft Nr. 9 ist gesperrt","Zuerst müsst ihr Chefkoch Wong den Täter nennen.","Zum Chat mit Chefkoch Wong"); document.getElementById("lockBtn").onclick=()=>go("chat"); return; }
@@ -289,13 +305,14 @@ function station(s){
   if(!S.v.includes(s)){ S.v.push(s); save(); }
   app.innerHTML = `<div class="card"><div class="kicker">Botschaft Nr. ${s}</div><h2>${d.t}</h2>
     ${player([...new Set(d.l.map(x=>x[0]))], undefined, s)}
-    <details open><summary>Mitlesen</summary>${lines(d.l, s)}</details></div><div id="extra"></div>`;
+    <div id="endNext" class="endnext"></div>
+    <details open><summary>Mitlesen</summary>${lines(d.l, s)}</details></div><div id="extra"></div>
+    ${nextOf(s)?`<button class="btn ghost" id="nextAlways">${nextOf(s)[1]} →</button>`:`<button class="btn ghost" id="nextAlways">Zur Fall-Akte</button>`}`;
+  document.getElementById("nextAlways").onclick=()=>{ stopAudio(); const n=nextOf(s); go(n?n[0]:undefined); };
   bindPlayers(app);
   const ex = document.getElementById("extra");
   if(s===4) paulGate(ex);
   if(s===7) tarikGate(ex);
-  if(s===8){ ex.innerHTML = `<div class="card"><h3>Habt ihr euch geeinigt?</h3><p class="muted">Erst die Alibi-Tabelle ausfüllen und einen Hauptverdächtigen wählen.</p><button class="btn red" id="weiter">Weiter</button></div>`; document.getElementById("weiter").onclick=()=>go("chat"); }
-  if(s===9){ ex.innerHTML = `<div class="card"><p>Code geknackt? Dann scannt den QR-Code auf Leos Zettel – oder tippt hier:</p><button class="btn" id="zt">Zur Kühlraum-Tür</button></div>`; document.getElementById("zt").onclick=()=>go("tuer"); }
   if(s===10){ ex.innerHTML = `<div class="card" style="text-align:center"><span class="stamp">Fall gelöst</span><h2 style="margin-top:12px">Glückwunsch, ${esc(nm())}!</h2><p>Jetzt schnell zum Kühlraum – dort wartet euer Dankeschön!</p></div>`; confetti(); }
 }
 
