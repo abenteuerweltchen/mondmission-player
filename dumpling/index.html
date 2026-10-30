@@ -291,8 +291,10 @@ function nextOf(s){
   if(s===9) return ["tuer", "Weiter zur Kühlraum-Tür"];
   return null;
 }
+const needsInput = s => (s===4 && !S.paul) || (s===7 && !S.tarik);
+function unlockNext(){ const b=document.getElementById("nextAlways"); if(b) b.style.display=""; }
 function endNext(key){
-  const s=Number(key); if(!s) return; const n=nextOf(s), box=document.getElementById("endNext"); if(!n||!box) return;
+  const s=Number(key)||({paul:4,tarik:7})[key]; if(!s || needsInput(s)) return; const n=nextOf(s), box=document.getElementById("endNext"); if(!n||!box) return;
   const hint = s===8 ? "Habt ihr euch auf einen Täter geeinigt? Dann weiter:" : s===9 ? "Code geknackt? Dann weiter:" : "Super! Löst jetzt die Aufgabe – dann geht es weiter:";
   box.innerHTML = `<p class="muted" style="margin:14px 0 0">${hint}</p><button class="btn red" id="endBtn">${n[1]} →</button>`;
   box.classList.add("show"); document.getElementById("endBtn").onclick=()=>{ stopAudio(); go(n[0]); };
@@ -305,9 +307,9 @@ function station(s){
   if(!S.v.includes(s)){ S.v.push(s); save(); }
   app.innerHTML = `<div class="card"><div class="kicker">Botschaft Nr. ${s}</div><h2>${d.t}</h2>
     ${player([...new Set(d.l.map(x=>x[0]))], undefined, s)}
-    <div id="endNext" class="endnext"></div>
     <details open><summary>Mitlesen</summary>${lines(d.l, s)}</details></div><div id="extra"></div>
-    ${nextOf(s)?`<button class="btn ghost" id="nextAlways">${nextOf(s)[1]} →</button>`:`<button class="btn ghost" id="nextAlways">Zur Fall-Akte</button>`}`;
+    <div id="endNext" class="endnext"></div>
+    <button class="btn ghost" id="nextAlways"${needsInput(s)?' style="display:none"':''}>${nextOf(s)?nextOf(s)[1]+" →":"Zur Fall-Akte"}</button>`;
   document.getElementById("nextAlways").onclick=()=>{ stopAudio(); const n=nextOf(s); go(n?n[0]:undefined); };
   bindPlayers(app);
   const ex = document.getElementById("extra");
@@ -327,7 +329,7 @@ function paulGate(ex){
   const check = () => {
     const v = pw.value.toUpperCase().replace(/[^A-ZÄÖÜ]/g,"");
     if(!v) return;
-    if(PASS_PAUL.includes(v)){ S.paul=true; save(); show(); const pb=ex.querySelector(".player[data-k]"); if(pb) startPlayer(pb); ex.scrollIntoView({behavior:"smooth"}); return; }
+    if(PASS_PAUL.includes(v)){ S.paul=true; save(); unlockNext(); show(); const pb=ex.querySelector(".player[data-k]"); if(pb) startPlayer(pb); ex.scrollIntoView({behavior:"smooth"}); return; }
     tries++; pw.classList.remove("shake"); void pw.offsetWidth; pw.classList.add("shake");
     m.className="msg bad";
     m.textContent = tries<3 ? "Paul schüttelt den Kopf. Das ist nicht sein Passwort." : "Tipp: Das Wort hat 8 Buchstaben. Prüft jeden Morse-Buchstaben noch einmal mit der Tabelle.";
@@ -358,7 +360,7 @@ function tarikGate(ex){
     if(sel.some(x=>!x.value)){ tm.innerHTML=lines([["tarik","Halt, halt! Erst alle vier Becher probieren und eine Zutat auswählen."]]); return; }
     const bad=sel.filter(x=>x.value!==BECHER[x.dataset.k]);
     sel.forEach(x=>{ x.classList.toggle("bad",bad.includes(x)); x.classList.toggle("ok",!bad.includes(x)); });
-    if(!bad.length){ S.tarik=true; save(); show(true); const tb=ex.querySelector(".player[data-k]"); if(tb) startPlayer(tb); ex.scrollIntoView({behavior:"smooth"}); return; }
+    if(!bad.length){ S.tarik=true; save(); unlockNext(); show(true); const tb=ex.querySelector(".player[data-k]"); if(tb) startPlayer(tb); ex.scrollIntoView({behavior:"smooth"}); return; }
     tries++;
     const ks=bad.map(x=>x.dataset.k), list=ks.length>1? ks.slice(0,-1).join(", ")+" und "+ks[ks.length-1] : ks[0];
     let t = ks.length===4 ? "Hmm, nee … das klingt gar nicht nach meiner Lieferung. Probiert nochmal!"
