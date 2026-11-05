@@ -178,7 +178,7 @@ footer a{color:var(--slate)}
   <main id="eltern" hidden>
     <div class="panel">
       <h2>So funktioniert die Mission</h2>
-      <p>Ihr Kind erlebt in 11 Funksprüchen ein echtes Astronauten-Training – mit Fakten über Raumfahrt und Mond, ganz ohne Zauberei.</p>
+      <p>Ihr Kind erlebt in 16 Funksprüchen ein echtes Astronauten-Training – mit Fakten über Raumfahrt und Mond, ganz ohne Zauberei.</p>
       <ol class="steps">
         <li>Auf jeder Seite des Heftes ist ein QR-Code. Scannen Sie ihn mit der Handy-Kamera.</li>
         <li>Ihr Kind drückt den großen gelben Knopf und hört den Funkspruch (ca. 1 Minute).</li>
@@ -204,16 +204,22 @@ const CREW={
 };
 const ST=[
  {id:"s00",p:1, who:"mila", t:"Der Auftrag", k:"Start", task:"Mila erklärt die Mission, stellt die Crew und Äffchen Kiko vor. Stifte bereitlegen: Bleistift, Rot, Blau, Gelb, Grün."},
- {id:"s01",p:2, who:"sam", t:"Ausrüstungs-Check", k:"Station 1", task:"Helm, Handschuh, Stiefel und Rucksack mit dem passenden Schatten verbinden. Den Helm gelb anmalen."},
- {id:"s02",p:3, who:"mila", t:"Der Raketenstart", k:"Station 2", task:"Countdown mitzählen, dann die Flugbahnen vom grünen Punkt aus nachfahren (Feinmotorik)."},
- {id:"s03",p:4, who:"sarah",t:"Essen im All", k:"Station 3", task:"Beutel zählen und die richtige Zahl einkreisen. Drei Tropfen in den Trinkbeutel malen."},
- {id:"s04",p:5, who:"sam", t:"Das Instrumentenbrett", k:"Station 4", task:"Farb- und Formenmuster fortsetzen. Die dritte Reihe ist die Profi-Aufgabe."},
- {id:"s05",p:6, who:"mila", t:"Schwebe-Pause", k:"Station 5", task:"Bewegungspause: schweben wie im All, Atemübung. Danach das Ausmalbild."},
- {id:"s06",p:7, who:"sarah",t:"Die Mondlandung", k:"Station 6", task:"Labyrinth: den sicheren Weg zum Landeplatz finden. Die Fahne grün anmalen."},
- {id:"s07",p:8, who:"sam", t:"Mondgestein", k:"Station 7", task:"Alle runden Steine einkreisen. Unten rechts: Welcher Stein ist anders?"},
- {id:"s08",p:9, who:"mila", t:"Das Sternbild", k:"Station 8", task:"Sterne von 1 bis 5 verbinden – es entsteht ein W (Kassiopeia)."},
- {id:"s09",p:10,who:"sarah",t:"Rückflug zur Erde", k:"Station 9", task:"Vier Bilder in die richtige Reihenfolge bringen. Die Fallschirme rot anmalen."},
- {id:"s10",p:11,who:"mila", t:"Deine Urkunde", k:"Finale", task:"Glückwunsch! Urkunde fertig machen: Missionsabzeichen gestalten und Kiko-Anzahl eintragen."}
+ {id:"s01",p:2, who:"mila", t:"Dein Astronauten-Ausweis", k:"Station 1", task:"Den Namen nachfahren, nachspuren und ganz allein schreiben (Schreiblernheft-Linien)."},
+ {id:"s02",p:3, who:"sam", t:"Ausrüstungs-Check", k:"Station 2", task:"Helm, Handschuh, Stiefel und Rucksack mit dem passenden Schatten verbinden. Den Helm gelb anmalen."},
+ {id:"s03",p:4, who:"sam", t:"Was passt nicht dazu?", k:"Station 3", task:"In jeder Reihe das Bild einkreisen, das nicht zu den anderen passt – und sagen, warum."},
+ {id:"s04",p:5, who:"mila", t:"Countdown und Start", k:"Station 4", task:"Die Zahlen 5 bis 1 nachfahren und laut rückwärts zählen, dann die Rauchwolken-Linien nachfahren (Feinmotorik)."},
+ {id:"s05",p:6, who:"sarah", t:"Blick aus dem Fenster", k:"Station 5", task:"Die Erden von groß (1) bis klein (4) ordnen. Die Erde im Fenster ausmalen."},
+ {id:"s06",p:7, who:"sarah", t:"Essen im All", k:"Station 6", task:"Beutel zählen und die richtige Zahl einkreisen. Welcher Korb hat mehr?"},
+ {id:"s07",p:8, who:"sam", t:"Das Instrumentenbrett", k:"Station 7", task:"Farb- und Formenmuster fortsetzen. Die dritte Reihe ist die Profi-Aufgabe."},
+ {id:"s08",p:9, who:"mila", t:"Signal-Lichter", k:"Station 8", task:"Genau zuhören und die Lichter aus dem Gedächtnis anmalen."},
+ {id:"s09",p:10, who:"sarah", t:"Schwebe-Pause", k:"Station 9", task:"Bewegungspause: schweben wie im All, Atemübung. Danach das Ausmalbild."},
+ {id:"s10",p:11, who:"mila", t:"Anfangslaute", k:"Station 10", task:"Jedes Bild mit dem passenden Anfangsbuchstaben verbinden (M, R, S, A)."},
+ {id:"s11",p:12, who:"sarah", t:"Die Mondlandung", k:"Station 11", task:"Labyrinth: den sicheren Weg zum Landeplatz finden. Die Fahne grün anmalen."},
+ {id:"s12",p:13, who:"sam", t:"Kiko war hier!", k:"Station 12", task:"Fehlersuche: fünf Unterschiede zwischen zwei Bildern finden und Sterne ausmalen."},
+ {id:"s13",p:14, who:"sam", t:"Mondgestein", k:"Station 13", task:"Alle runden Steine einkreisen. Unten rechts: Welcher Stein ist anders?"},
+ {id:"s14",p:15, who:"mila", t:"Dein eigenes Sternbild", k:"Station 14", task:"Sterne von 1 bis 5 verbinden und gelb anmalen."},
+ {id:"s15",p:16, who:"sarah", t:"Rückflug zur Erde", k:"Station 15", task:"Vier Bilder in die richtige Reihenfolge bringen (1 bis 4). Die Fallschirme rot anmalen."},
+ {id:"s16",p:17, who:"mila", t:"Deine Urkunde", k:"Finale", task:"Glückwunsch! Urkunde fertig machen: Unterschrift, Missionsabzeichen gestalten und Kiko-Anzahl eintragen."}
 ];
 const $=s=>document.querySelector(s);
 const store={get(k,d){try{const v=localStorage.getItem("mm_"+k);return v===null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem("mm_"+k,JSON.stringify(v))}catch(e){}}};
@@ -234,8 +240,8 @@ async function loadOrder(){
 }
 function clips(s){
   const o=order&&order.clips&&order.clips[s.id];
-  const open=o?o[0]:`audio/${s.id}_open_neutral.mp3`, close=o?o[1]:`audio/${s.id}_close_neutral.mp3`;
-  return [open,`audio/${s.id}_body.mp3`,close];
+  const open=o?o[0]:`audio/v2/${s.id}_open_neutral.mp3`, close=o?o[1]:`audio/v2/${s.id}_close_neutral.mp3`;
+  return [open,`audio/v2/${s.id}_body.mp3`,close];
 }
 
 // ---------- Funk-Geräusche (ohne Dateien) ----------
@@ -311,8 +317,8 @@ function media(){ if(!("mediaSession" in navigator))return; const s=ST[cur];
 function renderGrid(){
   const g=$("#grid"); g.innerHTML="";
   ST.forEach((s,i)=>{
-    const b=document.createElement("button"); b.className="tile"+(doneSet.has(s.id)?" done":"")+(i===0||i===10?" big2":"");
-    b.innerHTML=`<div><div class="n">${i===0?"Start":i===10?"Urkunde":i}</div><div class="t">${s.t}</div></div><img src="${CREW[s.who].img}" alt="">`;
+    const b=document.createElement("button"); b.className="tile"+(doneSet.has(s.id)?" done":"")+(i===0||i===16?" big2":"");
+    b.innerHTML=`<div><div class="n">${i===0?"Start":i===16?"Urkunde":i}</div><div class="t">${s.t}</div></div><img src="${CREW[s.who].img}" alt="">`;
     b.setAttribute("aria-current",i===cur); b.onclick=()=>{ setStation(i,false); window.scrollTo({top:0,behavior:"smooth"}) };
     g.appendChild(b);
   });
