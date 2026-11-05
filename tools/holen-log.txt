@@ -1,3 +1,11 @@
-OK img/v2/src/sheetA.png 1851959
-OK img/v2/src/scene.png 4139230
-OK img/v2/src/sheetB.png 4007395
+OK audio/v2/s01_body.mp3 631151
+OK audio/v2/s03_body.mp3 503255
+OK audio/v2/s04_body.mp3 734804
+OK audio/v2/s10_body.mp3 588937
+OK audio/v2/s12_body.mp3 578906
+OK audio/v2/s03_open_neutral.mp3 78191
+OK audio/v2/s03_open_moses.mp3 87386
+OK audio/v2/s03_close_neutral.mp3 60636
+OK audio/v2/s03_close_moses.mp3 70667
+OK audio/v2/s12_close_neutral.mp3 78191
+OK audio/v2/s12_close_moses.mp3 89893
