@@ -227,22 +227,26 @@ const qs=new URLSearchParams(location.search);
 let gen=0, order=null, cur=0, seq=[], part=0, playing=false, actx=null, totals=[], doneSet=new Set(store.get("done",[]));
 
 // ---------- Personalisierung ----------
+const GAS="%GAS%";           // Apps Script (Name + persönliche Funksprüche per Code – kein Name in der Adresse)
+const pcache={};
+function kode(){ const k=(qs.get("k")||store.get("k","")||"").toLowerCase(); return /^[a-z0-9]{6,16}$/.test(k)?k:""; }
 async function loadOrder(){
-  let k=qs.get("k")||store.get("k",null);
-  if(!k) return;
+  const k=kode(); if(!k) return;
   try{
-    const r=await fetch("orders/"+encodeURIComponent(k)+".json",{cache:"no-store"});
-    if(!r.ok) throw 0;
-    order=await r.json(); store.set("k",k);
+    const r=await fetch(GAS+"?k="+k); const d=await r.json(); if(!d.ok) throw 0;
+    order={name:d.name,g:d.g}; store.set("k",k);
     $("#forName").textContent="Das Astronauten-Training für "+order.name;
     const p=$("#pName");p.hidden=false;p.textContent="🎧 Die Funksprüche sind persönlich für "+order.name+" eingesprochen.";
-  }catch(e){ if(qs.get("k")) console.warn("Bestellung nicht gefunden",k); }
+  }catch(e){ console.warn("Bestellung nicht gefunden"); }
 }
-function clips(s){
-  const o=order&&order.clips&&order.clips[s.id];
-  const open=o?o[0]:`audio/v2/${s.id}_open_neutral.mp3`, close=o?o[1]:`audio/v2/${s.id}_close_neutral.mp3`;
-  return [open,`audio/v2/${s.id}_body.mp3`,close];
+function b64url(b){ const bin=atob(b), u=new Uint8Array(bin.length); for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i); return URL.createObjectURL(new Blob([u],{type:"audio/mpeg"})); }
+function personal(i){
+  if(!order) return Promise.resolve({});
+  if(!pcache[i]) pcache[i]=fetch(GAS+"?k="+kode()+"&s="+i).then(r=>r.json()).then(d=>({open:d.open?b64url(d.open):null,close:d.close?b64url(d.close):null})).catch(()=>{delete pcache[i];return {}});
+  return pcache[i];
 }
+function clips(s){ return [{p:"open",f:`audio/v2/${s.id}_open_neutral.mp3`},`audio/v2/${s.id}_body.mp3`,{p:"close",f:`audio/v2/${s.id}_close_neutral.mp3`}]; }
+async function src(x){ if(typeof x==="string") return x; const p=await personal(cur); return p[x.p]||x.f; }
 
 // ---------- Funk-Geräusche (ohne Dateien) ----------
 function ctx(){ if(!actx){ try{actx=new (window.AudioContext||window.webkitAudioContext)()}catch(e){} } if(actx&&actx.state==="suspended")actx.resume(); return actx }
@@ -272,11 +276,13 @@ function setStation(i,autoplay){
   $("#prog").style.width="0"; $("#time").textContent=""; $("#state").textContent="Bereit zum Empfang";
   $("#hint").textContent="Drück den gelben Knopf und hör gut zu!"; $("#next").classList.remove("show");
   document.querySelectorAll(".tile").forEach((t,j)=>t.setAttribute("aria-current",j===cur));
-  history.replaceState(null,"","?s="+cur+(qs.get("k")?"&k="+encodeURIComponent(qs.get("k")):""));
+  history.replaceState(null,"","?s="+cur+(kode()?"&k="+kode():""));
+  personal(cur); if(cur+1<ST.length) personal(cur+1);
   if(autoplay) start();
 }
-function playPart(){
-  au.src=seq[part]; au.load();
+async function playPart(){
+  const g=gen, u=await src(seq[part]); if(g!==gen) return;
+  au.src=u; au.load();
   const p=au.play(); if(p) p.catch(()=>{ stopUI(); $("#hint").textContent="Tippe nochmal auf den gelben Knopf."; });
 }
 async function start(){
@@ -297,7 +303,7 @@ au.addEventListener("timeupdate",()=>{
   const d=au.duration||0, frac=d?au.currentTime/d:0, w=((part+frac)/seq.length)*100;
   $("#prog").style.width=w+"%"; $("#time").textContent=fmt(au.currentTime)+(d?" / "+fmt(d):"");
 });
-au.addEventListener("error",()=>{ if(part<seq.length-1){part++;playPart()} else {stopUI();$("#state").textContent="Funkstörung – bitte nochmal versuchen";} });
+au.addEventListener("error",()=>{ const x=seq[part]; if(x&&typeof x==="object"&&au.src.startsWith("blob:")){ seq[part]=x.f; playPart(); return; } if(part<seq.length-1){part++;playPart()} else {stopUI();$("#state").textContent="Funkstörung – bitte nochmal versuchen";} });
 function finished(){
   doneSet.add(ST[cur].id); store.set("done",[...doneSet]); renderGrid();
   $("#prog").style.width="100%"; $("#state").textContent="Funkspruch beendet";
