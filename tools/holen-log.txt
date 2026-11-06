@@ -1,4 +1,1 @@
-OK audio/dumpling/raw/w01b.mp3 374106
-OK audio/dumpling/raw/w08b.mp3 258749
-FEHLER audio/dumpling/raw/regal_big.png HTTP Error 403: Forbidden
-FEHLER audio/dumpling/raw/regal_small.png HTTP Error 403: Forbidden
+OK audio/dumpling/raw/regal.png 2711114
