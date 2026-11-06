@@ -1,7 +1,6 @@
 [
  {
-  "pfad": "enc/neutral.pdf.enc",
-  "url": "https://export-download.canva.com/DXEXI/DAHZPZDXEXI/-1/0-7038521588355799661.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH4R7NKVBA%2F20261105%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261105T134213Z&X-Amz-Expires=39154&X-Amz-Signature=a91cf2101cf6e58ba9e394d5924b6dc4d6acd705a352be7f61e8e85e4db723f3&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Fri%2C%2006%20Nov%202026%2000%3A34%3A47%20GMT",
-  "enc": true
+  "pfad": "audio/v2/s01_body.mp3",
+  "url": "https://elevenlabsusercontent.com/database/workspace/090510abc78a4550bc49f75ee9ae1767/content_generation/bANRNtdvDkFKS5kK6TC1/o12fwljEU4pDNd2OQT3r/content.mp3?Expires=1793966400&KeyName=assets-cdn-key-1&Signature=TUQl5P1ptz-LWl3G-_-iKbJVXCw="
  }
 ]
