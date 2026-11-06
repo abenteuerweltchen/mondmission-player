@@ -202,6 +202,9 @@ const SKEY = "dumpling_" + (K||"demo");
 let S = {v:[], paul:false, tarik:false, solved:false, door:false};
 try{ const raw = localStorage.getItem(SKEY); if(raw) S = Object.assign(S, JSON.parse(raw)); }catch(e){}
 function save(){ try{ localStorage.setItem(SKEY, JSON.stringify(S)); }catch(e){} }
+function resetGame(){ S = {v:[], paul:false, tarik:false, solved:false, door:false}; save(); try{ stopAudio(); }catch(e){} go(); }
+if(q.get("reset")==="1"){ S = {v:[], paul:false, tarik:false, solved:false, door:false}; save(); q.delete("reset"); history.replaceState({}, "", "?"+q.toString()); }
+function resetBtn(id,label){ const b=document.getElementById(id); if(!b) return; b.onclick=()=>{ if(b.dataset.sure){ resetGame(); } else { b.dataset.sure=1; b.textContent="Wirklich alles zurücksetzen? Nochmal tippen"; } }; }
 function nm(){ return order && order.name ? order.name : "Detektive"; }
 function fill(t){ return t.replace(/\{N\}/g, nm()); }
 function esc(t){ return t.replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
@@ -276,12 +279,14 @@ function home(){
     <h1 style="margin-top:12px">Hallo ${esc(nm())}!</h1>
     <p>Das ist euer Detektiv-Handy. Scannt den QR-Code auf Botschaft 1 – dann öffnet sie sich hier. Bei Botschaft 4, 8, 9 und Tariks Lieferschein gibt es wieder einen QR-Code, sonst führt euch der Weiter-Knopf zur nächsten Botschaft.</p>
     <button class="btn" id="start">Botschaft Nr. 1 öffnen</button></div>
+  ${(S.v.length||S.solved||S.door||S.paul||S.tarik)?`<div class="card"><div class="kicker">Für Erwachsene</div><p class="muted">Ihr habt die Schatzsuche schon ausprobiert? Mit diesem Knopf ist alles wieder wie neu – alle Botschaften, Rätsel und die Kühlraum-Tür sind wieder verschlossen.</p><button class="btn ghost" id="resetHome">Schatzsuche zurücksetzen</button></div>`:""}
   <div class="card"><div class="kicker">Fall-Akte</div><h2>Die Verdächtigen</h2>
     <div class="grid">${sus.map(([w,s])=>`<div class="suspect ${seen(s)?"seen":""}"><img src="${P[w].img}" alt=""><span>${P[w].n.split(" ").pop()}</span></div>`).join("")}</div>
     <p class="muted">Farbig = schon befragt.</p>
     <div class="list">${Object.keys(ST).map(Number).filter(seen).map(s=>`<a class="item" href="${link(s)}" data-s="${s}"><span>Nr. ${s}: ${ST[s].t}</span><span class="tag">ansehen ›</span></a>`).join("") || `<p class="muted">Noch keine Botschaft geöffnet.</p>`}</div>
   </div>`;
   document.getElementById("start").onclick=()=>go(1);
+  resetBtn("resetHome");
   app.querySelectorAll(".item").forEach(a=>a.onclick=e=>{e.preventDefault();go(+a.dataset.s);});
 }
 
@@ -315,7 +320,7 @@ function station(s){
   const ex = document.getElementById("extra");
   if(s===4) paulGate(ex);
   if(s===7) tarikGate(ex);
-  if(s===10){ ex.innerHTML = `<div class="card" style="text-align:center"><span class="stamp">Fall gelöst</span><h2 style="margin-top:12px">Glückwunsch, ${esc(nm())}!</h2><p>Jetzt schnell zum Kühlraum – dort wartet euer Dankeschön!</p></div>`; confetti(); }
+  if(s===10){ ex.innerHTML = `<div class="card" style="text-align:center"><span class="stamp">Fall gelöst</span><h2 style="margin-top:12px">Glückwunsch, ${esc(nm())}!</h2><p>Jetzt schnell zum Kühlraum – dort wartet euer Dankeschön!</p><button class="btn ghost" id="resetEnd" style="margin-top:10px">Nochmal von vorn spielen</button></div>`; resetBtn("resetEnd"); confetti(); }
 }
 
 function paulGate(ex){
