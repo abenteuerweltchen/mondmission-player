@@ -1,1 +1,18 @@
-[{"pfad":"audio/video/emma_open.mp3","url":"https://elevenlabsusercontent.com/database/workspace/090510abc78a4550bc49f75ee9ae1767/content_generation/uLno5c2f8vZmJG81TVTq/yJK6LMyG9AkctJWmwkbW/content.mp3?Expires=1793970000&KeyName=assets-cdn-key-1&Signature=ibmJnC5btPEAut_DYJm3D9EUjLA="}]
+[
+ {
+  "pfad": "audio/dumpling/raw/w01b.mp3",
+  "url": "https://elevenlabsusercontent.com/database/workspace/090510abc78a4550bc49f75ee9ae1767/content_generation/6LUWn6KB3ZbJyOILAMtx/Pr2yn1bMRe8xX1bhp7HQ/content.mp3?Expires=1793984400&KeyName=assets-cdn-key-1&Signature=LSpGcyleYyarXqg3_XKVsnS9_OM="
+ },
+ {
+  "pfad": "audio/dumpling/raw/w08b.mp3",
+  "url": "https://elevenlabsusercontent.com/database/workspace/090510abc78a4550bc49f75ee9ae1767/content_generation/aIrgTDkhQVzm4UpQaOl6/T3yhpUCZmeyhwux681wY/content.mp3?Expires=1793984400&KeyName=assets-cdn-key-1&Signature=JgKzlfDAzAc-6HF3Qis7045e6Vs="
+ },
+ {
+  "pfad": "audio/dumpling/raw/regal_big.png",
+  "url": "https://media.canva.com/v2/image-resize/format:PNG/height:448/quality:100/uri:ifs%3A%2F%2FM%2Fb8ee0e8c-626b-4109-a684-c9fc639d55bd/watermark:F/width:888?csig=AAAAAAAAAAAAAAAAAAAAABRJSFF1wJdNDcK0QAz_xiPOmCpREfqeoBNxgKHURSOQ&exp=1793991692&osig=AAAAAAAAAAAAAAAAAAAAABXAAoLcTMKUusOMQm668Sc-Xc2vTsjMZ77xOij5oAo6&signer=media-rpc&token=AAIAAU0AJGI4ZWUwZThjLTYyNmItNDEwOS1hNjg0LWM5ZmM2MzlkNTViZAAAAAABobI8zuARqsGuVe3YsEg1saADHJIzPpQQF76nz3abkPk2idqOlQ&x-canva-quality=thumbnail"
+ },
+ {
+  "pfad": "audio/dumpling/raw/regal_small.png",
+  "url": "https://media.canva.com/v2/image-resize/format:PNG/height:100/quality:100/uri:ifs%3A%2F%2FM%2Fb8ee0e8c-626b-4109-a684-c9fc639d55bd/watermark:F/width:200?csig=AAAAAAAAAAAAAAAAAAAAABRJSFF1wJdNDcK0QAz_xiPOmCpREfqeoBNxgKHURSOQ&exp=1793991692&osig=AAAAAAAAAAAAAAAAAAAAABXAAoLcTMKUusOMQm668Sc-Xc2vTsjMZ77xOij5oAo6&signer=media-rpc&token=AAIAAU0AJGI4ZWUwZThjLTYyNmItNDEwOS1hNjg0LWM5ZmM2MzlkNTViZAAAAAABobI8zuARqsGuVe3YsEg1saADHJIzPpQQF76nz3abkPk2idqOlQ&x-canva-quality=thumbnail"
+ }
+]
