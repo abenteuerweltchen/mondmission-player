@@ -97,7 +97,7 @@ details summary::before{content:"▸ ";} details[open] summary::before{content:"
 .list{margin-top:10px}
 .item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-radius:14px;background:#fff;border:2px solid var(--line);margin-top:8px;font-weight:800;text-decoration:none;color:var(--text)}
 .item.locked{opacity:.55}
-.item .tag{font-size:12px;color:var(--muted)}
+.item .tag{font-size:12px;color:var(--muted);white-space:nowrap;flex-shrink:0;margin-left:8px}
 /* Chat */
 .phone{background:#e9dfcd;border-radius:26px;padding:12px;margin-top:14px;box-shadow:var(--shadow);border:2px solid var(--line)}
 .chathead{display:flex;align-items:center;gap:10px;background:var(--brown);color:#fff;border-radius:18px;padding:8px 12px}
@@ -279,12 +279,12 @@ function home(){
     <h1 style="margin-top:12px">Hallo ${esc(nm())}!</h1>
     <p>Das ist euer Detektiv-Handy. Scannt den QR-Code auf Botschaft 1 – dann öffnet sie sich hier. Bei Botschaft 4, 8, 9 und Tariks Lieferschein gibt es wieder einen QR-Code, sonst führt euch der Weiter-Knopf zur nächsten Botschaft.</p>
     <button class="btn" id="start">Botschaft Nr. 1 öffnen</button></div>
-  ${(S.v.length||S.solved||S.door||S.paul||S.tarik)?`<div class="card"><div class="kicker">Für Erwachsene</div><p class="muted">Ihr habt die Schatzsuche schon ausprobiert? Mit diesem Knopf ist alles wieder wie neu – alle Botschaften, Rätsel und die Kühlraum-Tür sind wieder verschlossen.</p><button class="btn ghost" id="resetHome">Schatzsuche zurücksetzen</button></div>`:""}
   <div class="card"><div class="kicker">Fall-Akte</div><h2>Die Verdächtigen</h2>
     <div class="grid">${sus.map(([w,s])=>`<div class="suspect ${seen(s)?"seen":""}"><img src="${P[w].img}" alt=""><span>${P[w].n.split(" ").pop()}</span></div>`).join("")}</div>
     <p class="muted">Farbig = schon befragt.</p>
     <div class="list">${Object.keys(ST).map(Number).filter(seen).map(s=>`<a class="item" href="${link(s)}" data-s="${s}"><span>Nr. ${s}: ${ST[s].t}</span><span class="tag">ansehen ›</span></a>`).join("") || `<p class="muted">Noch keine Botschaft geöffnet.</p>`}</div>
-  </div>`;
+  </div>
+${(S.v.length||S.solved||S.door||S.paul||S.tarik)?`<div class="card"><div class="kicker">Für Erwachsene</div><p class="muted">Ihr habt die Schatzsuche schon ausprobiert? Mit diesem Knopf ist alles wieder wie neu – alle Botschaften, Rätsel und die Kühlraum-Tür sind wieder verschlossen.</p><button class="btn ghost" id="resetHome">Schatzsuche zurücksetzen</button></div>`:""}`;
   document.getElementById("start").onclick=()=>go(1);
   resetBtn("resetHome");
   app.querySelectorAll(".item").forEach(a=>a.onclick=e=>{e.preventDefault();go(+a.dataset.s);});
@@ -299,11 +299,15 @@ function nextOf(s){
 const needsInput = s => (s===4 && !S.paul) || (s===7 && !S.tarik);
 function unlockNext(){ const b=document.getElementById("nextAlways"); if(b) b.style.display=""; }
 function endNext(key){
-  const s=Number(key)||({paul:4,tarik:7})[key]; if(!s || needsInput(s)) return; const n=nextOf(s), box=document.getElementById("endNext"); if(!n||!box) return;
-  const hint = s===8 ? "Habt ihr euch auf einen Täter geeinigt? Dann weiter:" : s===9 ? "Code geknackt? Dann weiter:" : "Super! Löst jetzt die Aufgabe – dann geht es weiter:";
-  box.innerHTML = `<p class="muted" style="margin:14px 0 0">${hint}</p><button class="btn red" id="endBtn">${n[1]} →</button>`;
-  box.classList.add("show"); document.getElementById("endBtn").onclick=()=>{ stopAudio(); go(n[0]); };
-  box.scrollIntoView({behavior:"smooth",block:"center"});
+  const s=Number(key)||({paul:4,tarik:7})[key]; if(!s || needsInput(s)) return; const n=nextOf(s), box=document.getElementById("endNext"), b=document.getElementById("nextAlways"); if(!n||!box||!b) return;
+  const hint = s===8 ? "Habt ihr euch auf einen Täter geeinigt? Dann weiter:"
+    : s===9 ? "Knackt mit Leos Zettel den Code – dann weiter zur Tür:"
+    : (s===4||s===7) ? "Tragt die Aussage in eure Verdächtigen-Liste ein – dann geht es weiter:"
+    : (s===3||s===5||s===6) ? "Löst jetzt die Aufgabe und tragt das Ergebnis in eure Verdächtigen-Liste ein – dann geht es weiter:"
+    : "Löst jetzt die Aufgabe – dann geht es weiter:";
+  box.innerHTML = `<p class="muted" style="margin:14px 0 0">${hint}</p>`; box.classList.add("show");
+  b.classList.remove("ghost"); b.classList.add("red"); b.style.animation="pop .35s ease";
+  b.scrollIntoView({behavior:"smooth",block:"center"});
 }
 function station(s){
   const d = ST[s];
@@ -320,7 +324,7 @@ function station(s){
   const ex = document.getElementById("extra");
   if(s===4) paulGate(ex);
   if(s===7) tarikGate(ex);
-  if(s===10){ ex.innerHTML = `<div class="card" style="text-align:center"><span class="stamp">Fall gelöst</span><h2 style="margin-top:12px">Glückwunsch, ${esc(nm())}!</h2><p>Jetzt schnell zum Kühlraum – dort wartet euer Dankeschön!</p><button class="btn ghost" id="resetEnd" style="margin-top:10px">Nochmal von vorn spielen</button></div>`; resetBtn("resetEnd"); confetti(); }
+  if(s===10){ ex.innerHTML = `<div class="card" style="text-align:center"><span class="stamp">Fall gelöst</span><h2 style="margin-top:12px">Glückwunsch, ${esc(nm())}!</h2><p>Jetzt schnell zum Kühlraum – dort wartet euer Dankeschön!</p><button class="btn ghost" id="resetEnd" style="margin-top:10px">Für Erwachsene: alles zurücksetzen</button></div>`; resetBtn("resetEnd"); confetti(); }
 }
 
 function paulGate(ex){
