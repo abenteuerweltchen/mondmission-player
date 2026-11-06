@@ -122,7 +122,7 @@ details summary::before{content:"▸ ";} details[open] summary::before{content:"
 .doorbox{position:relative;margin:14px auto 0;width:min(100%,320px);aspect-ratio:3/4;perspective:900px}
 .inside{position:absolute;inset:0;border-radius:18px;background:radial-gradient(circle at 50% 60%,#ffffff,var(--ice) 55%,var(--ice2));
   display:grid;place-items:center;text-align:center;overflow:hidden;border:4px solid var(--brown)}
-.inside .basket{font-size:76px;line-height:1;filter:drop-shadow(0 6px 6px rgba(0,0,0,.2));opacity:0;transform:scale(.6);transition:all .6s .8s}
+.inside .basket{width:92%;margin:0 auto;line-height:0;filter:drop-shadow(0 6px 6px rgba(0,0,0,.2));opacity:0;transform:scale(.6);transition:all .6s .8s}
 .inside .fog{position:absolute;inset:auto -20% -10% -20%;height:60%;background:radial-gradient(ellipse at center,rgba(255,255,255,.95),rgba(255,255,255,0) 70%);opacity:0;transition:opacity 1.2s .4s}
 .door{position:absolute;inset:0;transform-origin:left center;transition:transform 1.4s cubic-bezier(.5,.05,.25,1);transform-style:preserve-3d}
 .door svg{width:100%;height:100%;display:block}
@@ -160,10 +160,10 @@ const AUDIO = true;
 const AUD_BASE = "../audio/dumpling/";
 /* Audio-Dateien je Botschaft – Reihenfolge = Sprechblasen */
 /* "n" = persönlicher Namensclip (audio/dumpling/p/<k>/nXX.mp3), sonst allgemeine Datei */
-const PL = {1:["n","w01"],2:["n","w02"],3:["n","w03","leo03","w03b"],4:["n","w04","paul04"],5:["n","w05","greta05"],6:["n","w06","mila06"],
-  7:["n","w07","tarik07"],8:["n","w08"],9:["n","w09","leo09","w09b"],10:["leo10","n","w10"],paul:["paul_aussage"],tarik:["tarik_ok"]};
+const PL = {1:["n","w01","w01b"],2:["n","w02"],3:["n","w03","leo03","w03b"],4:["n","w04","paul04"],5:["n","w05","greta05"],6:["n","w06","mila06"],
+  7:["n","w07","tarik07"],8:["n","w08","w08b"],9:["n","w09","leo09","w09b"],10:["leo10","n","w10"],paul:["paul_aussage"],tarik:["tarik_ok"]};
 /* Welche Sprechblase (Mitlesen) gehört zu welchem Clip */
-const PL_LINE = {1:[0,0],2:[0,0],8:[0,0],3:[0,0,1,2],4:[0,0,1],5:[0,0,1],6:[0,0,1],7:[0,0,1],9:[0,0,1,2],10:[0,1,1]};
+const PL_LINE = {1:[0,0,0],2:[0,0],8:[0,0,0],3:[0,0,1,2],4:[0,0,1],5:[0,0,1],6:[0,0,1],7:[0,0,1],9:[0,0,1,2],10:[0,1,1]};
 const PASS_PAUL = ["DUMPLING","DUMPLINGS"];
 const DOOR_CODE = "736";
 const LIEFERUNG = ["Tomate","Apfelsaft","Paprika","Karotte","Orangensaft","Birne","Gurke","Zitrone","Banane"];
@@ -181,14 +181,14 @@ const P = {
 
 /* ===== Botschaften ({N} = Name) ===== */
 const ST = {
- 1:{t:"Ein Notruf aus der Küche", l:[["wong","Hallo {N}!\nIch habe gehört, du und dein Team seid die besten Detektive der ganzen Stadt – genau euch brauche ich jetzt! Ich bin Wong, Chefkoch der Goldenen Teigtasche. Heute um 19 Uhr kommt Paula Pfeffer, die strengste Restaurantkritikerin des Landes. Für sie habe ich 120 Dumplings von Hand gefaltet. Um 14:30 Uhr lagen sie noch im Kühlregal – um 15:00 Uhr war das Blech leer.\n\nKeine Einbruchspuren. Es war jemand aus meinem Team – und einer von fünf Leuten sagt nicht die Wahrheit. Stellt euer Detektiv-Team zusammen und bringt mir meine Dumplings zurück!"]]},
+ 1:{t:"Ein Notruf aus der Küche", l:[["wong","Hallo {N}!\nIch habe gehört, du und dein Team seid die besten Detektive der ganzen Stadt – genau euch brauche ich jetzt! Ich bin Wong, Chefkoch der Goldenen Teigtasche. Heute um 19 Uhr kommt Paula Pfeffer, die strengste Restaurantkritikerin des Landes. Für sie habe ich 120 Dumplings von Hand gefaltet. Um 14:30 Uhr lagen sie noch im Kühlregal – um 15:00 Uhr war das Blech leer.\n\nKeine Einbruchspuren. Es war jemand aus meinem Team – und einer von fünf Leuten sagt nicht die Wahrheit. Alle fünf findet ihr auf eurer Verdächtigen-Liste. Nehmt sie zu jeder Befragung mit und notiert nach jeder Aussage: Wo war die Person? Wer kann das bestätigen? Ist sie verdächtig? Stellt euer Detektiv-Team zusammen und bringt mir meine Dumplings zurück!"]]},
  2:{t:"Der Tatort", l:[["wong","Gut gemacht, {N}!\nDein Team steht. Jetzt zum Tatort: dem Kühlregal. Nach einem Diebstahl im letzten Jahr habe ich es mit Lichtschranken gesichert – unsichtbare Strahlen, kreuz und quer. Wer einen berührt, löst den Alarm aus.\n\nHinter den Strahlen wartet das erste Beweisstück. Schafft es dein Detektiv-Team hindurch, ohne Alarm auszulösen?"]]},
  3:{t:"Zeuge Nr. 1: Kellner Leo", w:"leo", l:[["wong","Achtung, {N}!\nIch schalte euch zu meinem Kellner Leo."],["leo","Hallo, Detektive! Ich helfe doch gern! Aber der Chef will, dass jede Aussage verschlüsselt ist. Also habe ich jeden Buchstaben im Alphabet ein paar Stellen verschoben. Wie viele? Findet es selbst heraus. Kleiner Tipp: Mein Zettel fängt mit „ICH“ an."],["wong","Entschlüsselt Leos Zettel – wo war er angeblich?"]]},
  4:{t:"Zeuge Nr. 2: Spüler Paul", w:"paul", l:[["wong","Hör gut zu, {N}!\nJetzt kommt Paul, mein Spüler. Er ist sehr schüchtern."],["paul","Ähm … hallo. Ich … ich habe was gehört. Aber ich sag's nur echten Detektiven. Deshalb habe ich ein Passwort in Morsezeichen versteckt. Wenn ihr es knackt, tippt es hier ein. Dann … dann erzähl ich's euch."]]},
  5:{t:"Zeugin Nr. 3: Greta", w:"greta", l:[["wong","Vorsicht, {N}!\nGreta, meine Sous-Chefin, ist sehr streng."],["greta","Meine Aussage steht auf meiner Rezeptkarte – in Spiegelschrift, wie alle meine Rezepte. Aber die bekommt nicht jeder! In meiner Küche fällt nichts herunter: kein Teller, kein Löffel, kein einziger Dumpling. Zeigt mir, dass ihr ruhige Hände habt!"]]},
  6:{t:"Zeugin Nr. 4: Mila", w:"mila", l:[["wong","Spannend, {N}!\nMila, meine Konditorin, hat etwas gefunden."],["mila","Hallo ihr! Ja, ich war mit Greta im Vorratskeller. Aber auf dem Weg dorthin habe ich im Personalraum etwas Komisches entdeckt! Was es ist, habe ich in einem Wortgitter versteckt. Findet alle Küchenwörter – die übrigen Buchstaben verraten es euch."]]},
  7:{t:"Zeuge Nr. 5: Tarik", w:"tarik", l:[["wong","Fast geschafft, {N}!\nHier ist Tarik, unser Lieferfahrer."],["tarik","Hi! Ich war um 14:50 Uhr an der Hintertür und habe Gemüse geliefert. Paul hat mir den Lieferschein unterschrieben. Auf dem Rückweg habe ich Mehlspuren auf dem Boden gesehen! Wohin sie führen, verrate ich euch – aber nur, wenn ihr meine Lieferung am Geschmack erkennt."]]},
- 8:{t:"Die Akte schließen", l:[["wong","Alle Aussagen liegen vor, {N}!\nJetzt seid ihr dran. Gute Detektive vertrauen nicht dem Bauchgefühl, sondern den Beweisen.\n\nTragt alles in die Alibi-Tabelle ein: Wer war wo? Und wer kann das bestätigen? Nur bei einer Person passt nichts zusammen. Einigt euch auf einen Hauptverdächtigen – und dann teilt ihn mir mit: Tippt hier unten auf „Weiter“."]]},
+ 8:{t:"Die Akte schließen", l:[["wong","Alle Aussagen liegen vor, {N}!\nJetzt seid ihr dran. Gute Detektive vertrauen nicht dem Bauchgefühl, sondern den Beweisen.\n\nLegt eure Verdächtigen-Liste auf den Tisch: Wer war wo? Und wer kann das bestätigen? Nur bei einer Person passt nichts zusammen. Einigt euch auf einen Hauptverdächtigen – und dann teilt ihn mir mit: Tippt hier unten auf „Weiter“."]]},
  9:{t:"Der Kühlraum", l:[["wong","Leo?! Das hätte ich nie gedacht, {N}!\nDie Mehlspuren führen direkt zum Kühlraum. Aber Leo hat das Zahlenschloss neu eingestellt."],["leo","Ich sag gar nichts! Den Code findet ihr nie. … Moment – wo ist eigentlich mein Zettel?"],["wong","Ha! Leo hat seinen Zettel liegen lassen. Knackt damit das Schloss!"]]},
  10:{t:"Fall gelöst!", l:[["leo","Ich geb's zu. Ich wollte die Dumplings heute Abend „zufällig“ wiederfinden – als Held. Dann hätte Chefkoch Wong mich bestimmt zum Oberkellner gemacht. Das war eine blöde Idee. Es tut mir leid."],["wong","Danke, {N}!\nDu und dein Detektiv-Team habt den Fall in Rekordzeit gelöst. Die Dumplings sind gerettet, die Kritikerin kann kommen. Als Dankeschön habe ich euch etwas in den Kühlraum gelegt …"]]}
 };
@@ -274,7 +274,7 @@ function home(){
   <div class="hero"><img src="img/cover.jpg" alt="Der Fall der verschwundenen Dumplings"></div>
   <div class="card"><span class="stamp">Streng vertraulich</span>
     <h1 style="margin-top:12px">Hallo ${esc(nm())}!</h1>
-    <p>Das ist euer Detektiv-Handy. Scannt den QR-Code auf eurem Leitfaden – dann öffnet sich die erste Botschaft hier. Bei Botschaft 4, 8, 9 und Tariks Lieferschein gibt es wieder einen QR-Code, sonst führt euch der Weiter-Knopf zur nächsten Botschaft.</p>
+    <p>Das ist euer Detektiv-Handy. Scannt den QR-Code auf Botschaft 1 – dann öffnet sie sich hier. Bei Botschaft 4, 8, 9 und Tariks Lieferschein gibt es wieder einen QR-Code, sonst führt euch der Weiter-Knopf zur nächsten Botschaft.</p>
     <button class="btn" id="start">Botschaft Nr. 1 öffnen</button></div>
   <div class="card"><div class="kicker">Fall-Akte</div><h2>Die Verdächtigen</h2>
     <div class="grid">${sus.map(([w,s])=>`<div class="suspect ${seen(s)?"seen":""}"><img src="${P[w].img}" alt=""><span>${P[w].n.split(" ").pop()}</span></div>`).join("")}</div>
@@ -400,7 +400,7 @@ function chat(){
   if(S.solved){
     add("Ihr habt den Fall schon gelöst – es war Leo!","in"); win(); return;
   }
-  say(["Hallo {N}! 👋","Ich halte es nicht mehr aus. Die Kritikerin kommt bald – und mein Kühlregal ist immer noch leer! 😰","Ihr habt alle Zeugen befragt. Ihr habt die Alibi-Tabelle ausgefüllt. Jetzt brauche ich eure Antwort …","Wer hat meine Dumplings versteckt? Schreibt mir den Namen! 🕵️"]);
+  say(["Hallo {N}! 👋","Ich halte es nicht mehr aus. Die Kritikerin kommt bald – und mein Kühlregal ist immer noch leer! 😰","Ihr habt alle Zeugen befragt. Eure Verdächtigen-Liste ist ausgefüllt. Jetzt brauche ich eure Antwort …","Wer hat meine Dumplings versteckt? Schreibt mir den Namen! 🕵️"]);
   const answer = () => {
     if(busy) return;
     const raw = inp.value.trim(); if(!raw) return;
@@ -424,7 +424,7 @@ function chat(){
     if(names.length) msg = R[names[0]];
     else if(has("wong")||has("chef")||has("koch")||has("ich")||has("du")) msg = "Ich?! 😅 Ich habe die Dumplings doch selbst gefaltet! Nein, nein – es war jemand aus meinem Team.";
     else msg = "Hmm, den Namen kenne ich gar nicht. In meinem Team sind Leo, Greta, Paul, Mila und Tarik.";
-    const tip = wrong===1 ? "Schaut nochmal in eure Alibi-Tabelle. Bei wem passt NICHTS zusammen? 🤔"
+    const tip = wrong===1 ? "Schaut nochmal auf eure Verdächtigen-Liste. Bei wem passt NICHTS zusammen? 🤔"
               : wrong===2 ? "Tipp: Wessen Aussage passt nicht zu dem, was Paul am Spülbecken gehört hat?"
               : "Großer Tipp: Wem gehört die Schürze voller Teigreste, die Mila im Personalraum gefunden hat? 👀";
     say([msg, tip]);
@@ -439,7 +439,7 @@ function door(){
   app.innerHTML = `<div class="card"><div class="kicker">Kühlraum</div><h2>Knackt das Zahlenschloss!</h2>
     <p class="muted">Stellt den Code von Leos Zettel ein und tippt auf „Öffnen“.</p>
     <div class="doorbox" id="db">
-      <div class="inside"><div class="fog"></div><div><div class="basket">🥟🥟🥟</div><h3 class="hide" id="found" style="margin-top:10px">Die Dumplings!</h3></div></div>
+      <div class="inside"><div class="fog"></div><div><div class="basket"><img src="img/kuehlregal.jpg" alt="Drei Dumplings im Kühlregal" style="width:100%;border-radius:12px;display:block"></div><h3 class="hide" id="found" style="margin-top:10px">Die Dumplings!</h3></div></div>
       <div class="door"><svg viewBox="0 0 300 400" aria-hidden="true">
         <rect x="4" y="4" width="292" height="392" rx="16" fill="#eef4f7" stroke="#7a6248" stroke-width="6"/>
         <rect x="26" y="70" width="248" height="300" rx="10" fill="#fff" stroke="#9cc3d5" stroke-width="4"/>
