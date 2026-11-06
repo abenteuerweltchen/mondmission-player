@@ -227,7 +227,7 @@ const qs=new URLSearchParams(location.search);
 let gen=0, order=null, cur=0, seq=[], part=0, playing=false, actx=null, totals=[], doneSet=new Set(store.get("done",[]));
 
 // ---------- Personalisierung ----------
-const GAS="%GAS%";           // Apps Script (Name + persönliche Funksprüche per Code – kein Name in der Adresse)
+const GAS="https://script.google.com/macros/s/AKfycbxPW2VhvjG9Ozrxy5yRVF_L3pgVcrDmlwQO8oehTPYYBUkgSJpMIHBZhOn-MmgVHWP1/exec";           // Apps Script (Name + persönliche Funksprüche per Code – kein Name in der Adresse)
 const pcache={};
 function kode(){ const k=(qs.get("k")||store.get("k","")||"").toLowerCase(); return /^[a-z0-9]{6,16}$/.test(k)?k:""; }
 async function loadOrder(){
