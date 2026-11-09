@@ -1,9 +1,9 @@
-# Mondmission – Funkgerät (Web-App)
+# mondmission-player – umgezogen
 
-Live: https://abenteuerweltchen.github.io/mondmission-player/
+Alle Hörspiel-Player liegen jetzt im Repo **abenteuerweltchen/abenteuerweltchen.github.io**
+(`https://abenteuerweltchen.github.io/<produkt>/`).
 
-- `?s=0…10` öffnet die Station (QR-Codes im Heft).
-- `?k=<bestellung>` lädt `orders/<bestellung>.json` (persönliche Begrüßung mit Namen). Demo: `?k=emma`.
-- Ohne `k` (und ohne gespeicherte Bestellung) laufen die Funksprüche ohne Namen.
-- `audio/sXX_body.mp3` = Hauptteil (für alle gleich), `sXX_open_*/sXX_close_*` = Begrüßung/Abschluss.
-- Neue Dateien holen: `tools/holen.json` (Liste aus `pfad` + `url`) pushen → GitHub Action „Audio holen“ lädt sie ins Repo.
+Dieses Repo bleibt nur bestehen, damit
+- bereits gedruckte QR-Codes der Mondmission weiterleiten (`index.html` → `/mondmission/`, Code bleibt erhalten),
+- das Mond-Apps-Script seine Vorlage findet (`tools/mondmission_vorlage.bin`, Funktion `vorlageHolen`),
+- der Dumpling-Test (`/dumpling/`) bis nach dem Geburtstag weiterläuft.
