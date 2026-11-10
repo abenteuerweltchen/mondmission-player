@@ -22,6 +22,8 @@ var CONFIG = {
   PRODUCT_FOLDER_ID: '1NyMq0hL4Kw0scXhherekrmqO9tNo25Ki',   // 01 Produkte › Detektiv-Schatzsuche Dumplings
   PRIVATE_FOLDER_ID: '1Qvpb1BRw6_WFH8IpicB5567SoZ8YWxob',   // … › Namensclips (privat)
   OUTPUT_FOLDER_ID: '1Afrq-TwLsQ5uvulyVUBl8lFXUSvTvd07',    // 02 Auslieferungen (automatisch)
+  ANLEITUNG_ID: '1dySFXxVjDKhW7sOmgpXYgdmBnN3e5q20',        // Anleitung_Schatzsuche.pdf (für alle Schatzsuchen gleich)
+  ANLEITUNG_NAME: 'Anleitung_Dumpling-Detektive.pdf',
   PDF_PREFIX: 'Dumpling-Detektive_',
   TEMPLATE_NAME: 'dumpling_vorlage.pdf',
   AUDIO_MODEL: 'eleven_v4',
@@ -71,6 +73,7 @@ function bestellung_(p) {
     var signed = new Array(r.bytes.length);
     for (var i = 0; i < r.bytes.length; i++) signed[i] = r.bytes[i] > 127 ? r.bytes[i] - 256 : r.bytes[i];
     var pdf = folder.createFile(Utilities.newBlob(signed, 'application/pdf', pdfName));
+    var anleitung = DriveApp.getFileById(CONFIG.ANLEITUNG_ID).makeCopy(CONFIG.ANLEITUNG_NAME, folder);
     var shared = true;
     try { folder.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW); } catch (e2) { shared = false; }
 
@@ -89,7 +92,7 @@ function bestellung_(p) {
       ok: true, order_id: order, name: r.name, gender: r.gender, email: input.email, code: code,
       player_url: DUMPLING_PLAYER_URL + '?k=' + code,
       folder_id: folder.getId(), folder_url: folder.getUrl(), folder_shared: shared,
-      file_id: pdf.getId(), file_name: pdfName,
+      file_id: pdf.getId(), file_name: pdfName, anleitung_id: anleitung.getId(), anleitung_name: CONFIG.ANLEITUNG_NAME,
       audio_folder_id: priv.getId(), audio_jobs: jobs, audio_count: jobs.length,
       audio_chars: jobs.reduce(function (t, j) { return t + j.body.text.length; }, 0),
       size_kb: Math.round(r.bytes.length / 1024), ms: Date.now() - t0,
