@@ -6,11 +6,20 @@
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#7a6248">
 <title>Detektiv-Handy – Der Fall der verschwundenen Dumplings</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DynaPuff:wght@500;600&family=Nunito:wght@500;700;800&display=swap">
 <link rel="icon" href="img/wong.jpg">
 <style>
+@font-face{font-family:"DynaPuff";font-style:normal;font-weight:500;font-display:swap;src:url(fonts/dynapuff-latin-500.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122}
+@font-face{font-family:"DynaPuff";font-style:normal;font-weight:500;font-display:swap;src:url(fonts/dynapuff-latin-ext-500.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0}
+@font-face{font-family:"DynaPuff";font-style:normal;font-weight:600;font-display:swap;src:url(fonts/dynapuff-latin-600.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122}
+@font-face{font-family:"DynaPuff";font-style:normal;font-weight:600;font-display:swap;src:url(fonts/dynapuff-latin-ext-600.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0}
+@font-face{font-family:"Nunito";font-style:normal;font-weight:500;font-display:swap;src:url(fonts/nunito-latin-500.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122}
+@font-face{font-family:"Nunito";font-style:normal;font-weight:500;font-display:swap;src:url(fonts/nunito-latin-ext-500.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0}
+@font-face{font-family:"Nunito";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/nunito-latin-700.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122}
+@font-face{font-family:"Nunito";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/nunito-latin-ext-700.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0}
+@font-face{font-family:"Nunito";font-style:normal;font-weight:800;font-display:swap;src:url(fonts/nunito-latin-800.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122}
+@font-face{font-family:"Nunito";font-style:normal;font-weight:800;font-display:swap;src:url(fonts/nunito-latin-ext-800.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0}
+@font-face{font-family:"Raleway";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/raleway-latin-700.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122}
+@font-face{font-family:"Raleway";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/raleway-latin-ext-700.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0}
 :root{
   --bg:#f6efe2; --paper:#fffdf8; --line:#e3d6bf; --brown:#7a6248; --brown2:#5e4a35; --text:#2e3a46; --muted:#6f6458;
   --red:#c0392b; --ok:#3e8e5e; --ice:#dcecf3; --ice2:#9cc3d5; --gold:#e2b162;
@@ -34,7 +43,10 @@ header.top{display:flex;align-items:center;justify-content:space-between;padding
 h1,h2,h3{font-family:var(--display);font-weight:600;color:var(--brown2);line-height:1.15;margin:0}
 h1{font-size:clamp(24px,7vw,32px)} h2{font-size:24px} h3{font-size:19px}
 .hero{border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);aspect-ratio:1123/794;position:relative;background:#2b1d12}
+.hero{container-type:inline-size}
 .hero img{width:100%;height:100%;object-fit:cover}
+.hero .cvn span{display:inline-block}
+.hero .cvn{position:absolute;left:0;right:0;top:calc(83.6% - 2.513cqw);text-align:center;font-family:"Raleway",system-ui,sans-serif;font-weight:700;font-size:2.583cqw;line-height:1.241;letter-spacing:.0956em;color:#ecd7b7;white-space:nowrap}
 .stamp{display:inline-block;border:3px solid var(--red);color:var(--red);font-family:var(--display);font-weight:600;
   padding:2px 10px;border-radius:8px;transform:rotate(-6deg);font-size:14px;letter-spacing:1px;text-transform:uppercase}
 .btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:14px;padding:15px 18px;border-radius:16px;
@@ -158,6 +170,7 @@ footer a{color:var(--muted)}
 /* ===== Einstellungen ===== */
 const AUDIO = true;
 const AUD_BASE = "../audio/dumpling/";
+const GAS = "https://script.google.com/macros/s/AKfycbydGSJZ8g1KvJM3S8FTgIQ0XcJ_ZiZB3rDjEhlR-HO_0auA3yIy26r9UaoG6W7xr2TGsg/exec";
 /* Audio-Dateien je Botschaft – Reihenfolge = Sprechblasen */
 /* "n" = persönlicher Namensclip (audio/dumpling/p/<k>/nXX.mp3), sonst allgemeine Datei */
 const PL = {1:["n","w01","w01b"],2:["n","w02"],3:["n","w03","leo03","w03b"],4:["n","w04","paul04"],5:["n","w05","greta05"],6:["n","w06","mila06"],
@@ -232,16 +245,24 @@ function setBtn(box,on,txt){ const b=box.querySelector(".play"); if(!b) return; 
   const st=box.querySelector(".pst"); if(st) st.textContent = txt || (on?"Läuft …":"Zum Anhören tippen"); }
 function markLine(c,i){ const scope=c.box.closest(".card"); if(!scope) return;
   scope.querySelectorAll('.lines[data-k="'+c.key+'"] .bubble').forEach((el,j)=>el.classList.toggle("active",j===i)); }
-function clipUrl(key,i){
-  const id=PL[key][i];
-  if(id!=="n") return AUD_BASE + id + ".mp3";
-  if(!K || !(order && order.name)) return null;               // ohne Bestellung: Namensclip überspringen
-  return AUD_BASE + "p/" + K + "/n" + String(key).padStart(2,"0") + ".mp3";
-}
+const NC = {};
+function nameClip(key){ const n=String(key).padStart(2,"0");
+  if(!NC[n]) NC[n]=fetch(GAS+"?k="+encodeURIComponent(K)+"&b="+n).then(r=>r.json()).then(j=>{ if(!j.ok||!j.a) return null;
+    const bin=atob(j.a), u=new Uint8Array(bin.length); for(let x=0;x<bin.length;x++) u[x]=bin.charCodeAt(x);
+    return URL.createObjectURL(new Blob([u],{type:"audio/mpeg"})); }).catch(()=>null);
+  return NC[n]; }
 function playIdx(c,i){
   const list=PL[c.key];
   if(i>=list.length){ setBtn(c.box,false,"Nochmal anhören"); markLine(c,-1); c.box.querySelector(".pbar i").style.width="100%"; cur=null; endNext(c.key); return; }
-  const url=clipUrl(c.key,i); if(!url) return playIdx(c,i+1);
+  const id=list[i];
+  if(id==="n"){
+    if(!K || !(order && order.name)) return playIdx(c,i+1);     // ohne Bestellung: Namensclip überspringen
+    nameClip(c.key).then(u=>{ if(cur!==c) return; if(!u) return playIdx(c,i+1); startClip(c,i,u); });
+    return;
+  }
+  startClip(c,i,AUD_BASE+id+".mp3");
+}
+function startClip(c,i,url){
   c.i=i; markLine(c, PL_LINE[c.key] ? PL_LINE[c.key][i] : i); AU.src = url;
   const p = AU.play(); if(p && p.catch) p.catch(()=>{ setBtn(c.box,false,"Tippen zum Abspielen"); });
 }
@@ -270,11 +291,19 @@ function confetti(){
 }
 
 /* ===== Seiten ===== */
+function coverText(){
+  const g = order && order.g==="w" ? "Meisterdetektivin" : "Meisterdetektiv";
+  if(!(order && order.name)) return "<span>Ein Fall für Meisterdetektive</span>";
+  return "<span>Ein Fall für "+g+"</span><br><span>"+esc(order.name)+"</span>";
+}
+function fitCover(){ const el=document.getElementById("cvn"); if(!el) return; el.style.transform="none";
+  const w=Math.max(0,...[...el.querySelectorAll("span")].map(x=>x.getBoundingClientRect().width));
+  const k=Math.min(1, el.parentElement.clientWidth*0.78/Math.max(1,w)); if(k<1) el.style.transform="scale("+k+")"; }
 function home(){
   const seen = n => S.v.includes(n);
   const sus = [["leo",3],["greta",5],["paul",4],["mila",6],["tarik",7]];
   app.innerHTML = `
-  <div class="hero"><img src="img/cover.jpg" alt="Der Fall der verschwundenen Dumplings"></div>
+  <div class="hero"><img src="img/cover.jpg" alt="Der Fall der verschwundenen Dumplings"><div class="cvn" id="cvn">${coverText()}</div></div>
   <div class="card"><span class="stamp">Streng vertraulich</span>
     <h1 style="margin-top:12px">Hallo ${esc(nm())}!</h1>
     <p>Das ist euer Detektiv-Handy. Scannt den QR-Code auf Botschaft 1 – dann öffnet sie sich hier. Bei Botschaft 4, 8, 9 und Tariks Lieferschein gibt es wieder einen QR-Code, sonst führt euch der Weiter-Knopf zur nächsten Botschaft.</p>
@@ -285,6 +314,7 @@ function home(){
     <div class="list">${Object.keys(ST).map(Number).filter(seen).map(s=>`<a class="item" href="${link(s)}" data-s="${s}"><span>Nr. ${s}: ${ST[s].t}</span><span class="tag">ansehen ›</span></a>`).join("") || `<p class="muted">Noch keine Botschaft geöffnet.</p>`}</div>
   </div>
 ${(S.v.length||S.solved||S.door||S.paul||S.tarik)?`<div class="card"><div class="kicker">Für Erwachsene</div><p class="muted">Ihr habt die Schatzsuche schon ausprobiert? Mit diesem Knopf ist alles wieder wie neu – alle Botschaften, Rätsel und die Kühlraum-Tür sind wieder verschlossen.</p><button class="btn ghost" id="resetHome">Schatzsuche zurücksetzen</button></div>`:""}`;
+  fitCover();
   document.getElementById("start").onclick=()=>go(1);
   resetBtn("resetHome");
   app.querySelectorAll(".item").forEach(a=>a.onclick=e=>{e.preventDefault();go(+a.dataset.s);});
@@ -488,7 +518,8 @@ function route(){
   home();
 }
 (async function(){
-  if(K){ try{ const r = await fetch("orders/"+K+".json",{cache:"no-store"}); if(r.ok) order = await r.json(); }catch(e){} }
+  if(K){ try{ const r = await fetch(GAS+"?k="+encodeURIComponent(K)); const j = await r.json(); if(j && j.ok) order = {name:j.name, g:j.g}; }catch(e){} }
+  if(order && order.name){ (async()=>{ for(let i=1;i<=10;i++) await nameClip(i); })(); }
   route();
 })();
 </script>
